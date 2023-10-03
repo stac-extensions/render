@@ -111,7 +111,8 @@ From the [Landsat-8 example](examples/item-landsat8.json) \[[article](https://ww
     "vrt:algorithm_opts": {
       "expression": "(B05–B04)/(B05+B04)"
     },
-    "vrt:rescale": [[-1,1]]
+    "vrt:rescale": [[-1,1]],
+    "rdr:colormap_name": "ylgn"
   }
 }
 ```
@@ -121,6 +122,7 @@ From the [Landsat-8 example](examples/item-landsat8.json) \[[article](https://ww
 | url        | STAC Item URL                                           | `https://raw.githubusercontent.com/stac-extensions/raster/main/examples/item-landsat8.json` |
 | rescale    | Delimited Min,Max bounds defined in `vrt:rescale` field | `-1,1`                                                                                      |
 | expression | Band math formula as defined in field `vrt:algorithm`   | `(B5–B4)/(B5+B4)`                                                                           |
+| colormap   | Color map JSON definition as defined in `rdr:colormap`  | `ylgn`                                                                                      |
 
 URL:
 
@@ -132,12 +134,7 @@ Result:  Landsat Surface Reflectance Normalized Difference Vegetation Index (NDV
 
 ## Links
 
-The following types should be used as applicable `rel` types in the
-[Link Object](https://github.com/radiantearth/stac-spec/tree/master/item-spec/item-spec.md#link-object).
-
-| Type           | Description                           |
-| -------------- | ------------------------------------- |
-| fancy-rel-type | This link points to a fancy resource. |
+It is highly suggested to have a web map link in the `links` section of the STAC Item as described in the [Web Map Link extension](https://github.com/stac-extensions/web-map-links) to allow consumers to easily visualize the asset.
 
 ## Contributing
 

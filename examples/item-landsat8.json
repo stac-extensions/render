@@ -52,7 +52,14 @@
       ]
     ]
   },
-  "links": [],
+  "links": [
+    {
+      "href": "https://maps.example.com/xyz/{z}/{x}/{y}.png",
+      "rel": "xyz",
+      "type": "image/png",
+      "title": "RGB composite visualized through a XYZ"
+    }
+  ],
   "assets": {
     "thumbnail": {
       "href": "https://landsat-pds.s3.us-west-2.amazonaws.com/c1/L8/044/033/LC08_L1TP_044033_20210305_20210312_01_T1/LC08_L1TP_044033_20210305_20210312_01_T1_thumb_large.jpg",
