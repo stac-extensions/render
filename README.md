@@ -5,9 +5,9 @@
 - **Field Name Prefix:** rdr
 - **Scope:** Item, Collection
 - **Extension [Maturity Classification](https://github.com/radiantearth/stac-spec/tree/master/extensions/README.md#extension-maturity):** Proposal
-- **Owner**: @emmanuelmathot
+- **Owner**: @emmanuelmathot @abarciauskas-bgse
 
-This document explains the Template Extension to the [SpatioTemporal Asset Catalog](https://github.com/radiantearth/stac-spec) (STAC) specification.
+This document explains the Rendering Extension to the [SpatioTemporal Asset Catalog](https://github.com/radiantearth/stac-spec) (STAC) specification.
 
 Rendering extension aims at providings consumers with the information required to view an asset properly (e.g. on a online map)
 
