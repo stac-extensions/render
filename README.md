@@ -74,11 +74,10 @@ From the [Sentinel-2 item](https://github.com/stac-extensions/virtual-assets/blo
   {
     "roles": [ "overview", "virtual" ],
     "title": "Shortwave Infra-red",
-    "vrt:hrefs": [ 
-      "https://raw.githubusercontent.com/stac-extensions/raster/main/examples/item-sentinel2.json#B12",
-      "https://raw.githubusercontent.com/stac-extensions/raster/main/examples/item-sentinel2.json#B8A",
-      "https://raw.githubusercontent.com/stac-extensions/raster/main/examples/item-sentinel2.json#B04"
-    ],
+    "vrt:hrefs": [
+      { "key": "swir22", "href": "https://raw.githubusercontent.com/stac-extensions/raster/main/examples/item-sentinel2.json#/assets/B12"}, 
+      { "key": "nir2", "href": "https://raw.githubusercontent.com/stac-extensions/raster/main/examples/item-sentinel2.json#/assets/B8A"},
+      { "key": "red", "href": "https://raw.githubusercontent.com/stac-extensions/raster/main/examples/item-sentinel2.json#/assets/B12"}],
     "vrt:rescale": [[0,5000],[0,7000],[0,9000]]
   }
 }
@@ -105,7 +104,9 @@ From the [Landsat-8 example](examples/item-landsat8.json) \[[article](https://ww
   "ndvi": 
   {
     "roles": [ "virtual", "data", "index" ],
-    "virtual:hrefs": [ "#/assets/B04", "#/assets/B05" ],
+    "vrt:hrefs": [
+      { "key": "B04", "href": "#/assets/B04"}, 
+      { "key": "B05", "href": "#/assets/B05"}],
     "title": "Normalized Difference Vegetation Index",
     "vrt:algorithm": "band_arithmetic",
     "vrt:algorithm_opts": {
@@ -117,12 +118,12 @@ From the [Landsat-8 example](examples/item-landsat8.json) \[[article](https://ww
 }
 ```
 
-| Query key  | value                                                   | Example value                                                                               |
-| ---------- | ------------------------------------------------------- | ------------------------------------------------------------------------------------------- |
-| url        | STAC Item URL                                           | `https://raw.githubusercontent.com/stac-extensions/raster/main/examples/item-landsat8.json` |
-| rescale    | Delimited Min,Max bounds defined in `vrt:rescale` field | `-1,1`                                                                                      |
-| expression | Band math formula as defined in field `vrt:algorithm`   | `(B5–B4)/(B5+B4)`                                                                           |
-| colormap   | Color map JSON definition as defined in `rdr:colormap`  | `ylgn`                                                                                      |
+| Query key  | value                                                       | Example value                                                                               |
+| ---------- | ----------------------------------------------------------- | ------------------------------------------------------------------------------------------- |
+| url        | STAC Item URL                                               | `https://raw.githubusercontent.com/stac-extensions/raster/main/examples/item-landsat8.json` |
+| rescale    | Delimited Min,Max bounds defined in `vrt:rescale` field     | `-1,1`                                                                                      |
+| expression | Band math formula as defined in field `vrt:algorithm`       | `(B5–B4)/(B5+B4)`                                                                           |
+| colormap   | Color map JSON definition as defined in `rdr:colormap_name` | `ylgn`                                                                                      |
 
 URL:
 
