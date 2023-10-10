@@ -26,12 +26,13 @@ The fields in the table below can be used in these parts of STAC documents:
 - [x] Assets (for both Collections and Items, incl. Item Asset Definitions in Collections)
 - [ ] Links
 
-| Field Name        | Type   | Description                                                                                                                                  |
-| ----------------- | ------ | -------------------------------------------------------------------------------------------------------------------------------------------- |
-| rdr:colormap_name | string | Color map identifier that must be applied for a raster band                                                                                  |
-| rdr:colormap      | object | [Color map JSON definition](https://developmentseed.org/titiler/advanced/rendering/#custom-colormaps) that must be applied for a raster band |
-| rdr:color_formula | string | [Color formula](https://developmentseed.org/titiler/advanced/rendering/#color-formula) that must be applied for a raster band                |
-| rdr:minmax_zoom   | \[int] | Zoom levels range applicable for the visualization                                                                                           |
+| Field Name        | Type   | Description                                                                                                                                                          |
+| ----------------- | ------ | -------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| rdr:colormap_name | string | Color map identifier that must be applied for a raster band                                                                                                          |
+| rdr:colormap      | object | [Color map JSON definition](https://developmentseed.org/titiler/advanced/rendering/#custom-colormaps) that must be applied for a raster band                         |
+| rdr:color_formula | string | [Color formula](https://developmentseed.org/titiler/advanced/rendering/#color-formula) that must be applied for a raster band                                        |
+| rdr:resampling    | string | Resampling algorithm to apply to the virtual asset. See [GDAL resampling algorithm](https://gdal.org/programs/gdalwarp.html#cmdoption-gdalwarp-r) for some examples. |
+| rdr:minmax_zoom   | \[int] | Zoom levels range applicable for the visualization                                                                                                                   |
 
 ## Dynamic tile servers integration
 
@@ -113,17 +114,19 @@ From the [Landsat-8 example](examples/item-landsat8.json) \[[article](https://ww
       "expression": "(B05–B04)/(B05+B04)"
     },
     "vrt:rescale": [[-1,1]],
-    "rdr:colormap_name": "ylgn"
+    "rdr:colormap_name": "ylgn",
+    "rdr:resampling": "average"
   }
 }
 ```
 
-| Query key  | value                                                       | Example value                                                                               |
-| ---------- | ----------------------------------------------------------- | ------------------------------------------------------------------------------------------- |
-| url        | STAC Item URL                                               | `https://raw.githubusercontent.com/stac-extensions/raster/main/examples/item-landsat8.json` |
-| rescale    | Delimited Min,Max bounds defined in `vrt:rescale` field     | `-1,1`                                                                                      |
-| expression | Band math formula as defined in field `vrt:algorithm`       | `(B5–B4)/(B5+B4)`                                                                           |
-| colormap   | Color map JSON definition as defined in `rdr:colormap_name` | `ylgn`                                                                                      |
+| Query key         | value                                                                                | Example value                                                                               |
+| ----------------- | ------------------------------------------------------------------------------------ | ------------------------------------------------------------------------------------------- |
+| url               | STAC Item URL                                                                        | `https://raw.githubusercontent.com/stac-extensions/raster/main/examples/item-landsat8.json` |
+| rescale           | Delimited Min,Max bounds defined in `vrt:rescale` field                              | `-1,1`                                                                                      |
+| expression        | Band math formula as defined in field `vrt:algorithm`                                | `(B5–B4)/(B5+B4)`                                                                           |
+| colormap          | Color map JSON definition as defined in `rdr:colormap_name`                          | `ylgn`                                                                                      |
+| resampling_method | Resampling method to use when reprojecting the raster as defined in `rdr:resampling` | `average`                                                                                   |
 
 URL:
 
