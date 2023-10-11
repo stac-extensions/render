@@ -75,7 +75,7 @@ A rescaling of the values from the source asset(s) to the destination asset can 
 It is specified as a 2 dimensions array of delimited Min,Max range per band.
 
 ```json
-"vrt:rescale": [
+"rescale": [
   [0, 10000], // band 1
   [0, 10000], // band 2
   [0, 10000]  // band 3
