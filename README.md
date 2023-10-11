@@ -28,9 +28,9 @@ The fields in the table below can be used in these parts of STAC documents:
 - [ ] Assets (for both Collections and Items, incl. Item Asset Definitions in Collections)
 - [ ] Links
 
-| Field Name | Type                       | Description                                                                               |
-| ---------- | -------------------------- | ----------------------------------------------------------------------------------------- |
-| renders    | Map<string, Render Object> | **REQUIRED**. Dictionary of rendering objects that can be viewed, each with a unique key. |
+| Field Name | Type                                         | Description                                                                               |
+| ---------- | -------------------------------------------- | ----------------------------------------------------------------------------------------- |
+| renders    | Map<string, [Render Object](#render-object)> | **REQUIRED**. Dictionary of rendering objects that can be viewed, each with a unique key. |
 
 ### Render Object
 
@@ -56,7 +56,7 @@ The assets MUST be local assets defined in the same item.
 
 > \[!NOTE]
 > When it is intended to use assets from external items or specific bands in an asset,
-> it is recommended to define a [virtual assets](https://github.com/stac-extensions/virtual-assets)
+> it is recommended to define a [virtual asset](https://github.com/stac-extensions/virtual-assets)
 > and then reference its key in the `assets` field. See the [NDVI example](#normalized-difference-vegetation-index-ndvi-example).
 
 ## Positioning
@@ -138,7 +138,7 @@ From the [Sentinel-2 item](https://github.com/stac-extensions/virtual-assets/blo
 | assets    | Assets keys defined in the `assets` fields          | `B12,B8A,B04`                                                                                |
 | rescale   | Delimited Min,Max bounds defined in `rescale` field | `0,5000,0,7000,0,9000`                                                                       |
 
-URL: `https://api.cogeo.xyz/stac/crop/14.869,37.682,15.113,37.862/256x256.png?url=https://raw.githubusercontent.com/stac-extensions/raster/main/examples/item-sentinel2.json&assets=B12,B8A,B04&resampling_method=average&rescale=0,5000,0,7000,0,9000&return_mask=true`
+URL: [`https://api.cogeo.xyz/stac/crop/14.869,37.682,15.113,37.862/256x256.png?url=https://raw.githubusercontent.com/stac-extensions/raster/main/examples/item-sentinel2.json&assets=B12,B8A,B04&resampling_method=average&rescale=0,5000,0,7000,0,9000&return_mask=true`](https://api.cogeo.xyz/stac/crop/14.869,37.682,15.113,37.862/256x256.png?url=https://raw.githubusercontent.com/stac-extensions/raster/main/examples/item-sentinel2.json&assets=B12,B8A,B04&resampling_method=average&rescale=0,5000,0,7000,0,9000&return_mask=true)
 
 **Result**: Lava thermal signature of Mount Etna eruption (February 2021)
 
@@ -185,19 +185,19 @@ If this case, the parameters to titiler must be extracted from both the virtual 
 | ----------------- | -------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------- |
 | url               | STAC Item URL                                                                    | `https://raw.githubusercontent.com/stac-extensions/raster/main/examples/item-landsat8.json` |
 | expression        | Band math formula as defined in field `vrt:algorithm`                            | `(B5–B4)/(B5+B4)`                                                                           |
-| rescale           | Delimited Min,Max bounds defined in `rescale` field of the `vrt:algorithm_opts`  | `-1,1`                                                                                      |
+| rescale           | Delimited Min,Max bounds defined in `rescale` field                              | `-1,1`                                                                                      |
 | colormap          | Color map JSON definition as defined in `colormap_name`                          | `ylgn`                                                                                      |
 | resampling_method | Resampling method to use when reprojecting the raster as defined in `resampling` | `average`                                                                                   |
 
 URL:
 
-`https://api.cogeo.xyz/stac/preview.png?url=https://raw.githubusercontent.com/stac-extensions/raster/main/examples/item-landsat8.json&expression=(B5–B4)/(B5+B4)&max_size=512&width=512&resampling_method=average&rescale=-1,1&color_map=ylgn&return_mask=true`
+[`https://api.cogeo.xyz/stac/preview.png?url=https://raw.githubusercontent.com/stac-extensions/raster/main/examples/item-landsat8.json&expression=(B5–B4)/(B5+B4)&max_size=512&width=512&resampling_method=average&rescale=-1,1&color_map=ylgn&return_mask=true`](https://api.cogeo.xyz/stac/preview.png?url=https://raw.githubusercontent.com/stac-extensions/raster/main/examples/item-landsat8.json&expression=(B5–B4)/(B5+B4)&max_size=512&width=512&resampling_method=average&rescale=-1,1&color_map=ylgn&return_mask=true)
 
 Result:  Landsat Surface Reflectance Normalized Difference Vegetation Index (NDVI) path 44 row 33.
 
 ![sacramento](https://api.cogeo.xyz/stac/preview.png?url=https://raw.githubusercontent.com/stac-extensions/raster/main/examples/item-landsat8.json&expression=(B5–B4)/(B5+B4)&max_size=512&width=512&resampling_method=average&rescale=-1,1&color_map=ylgn&return_mask=true)
 
-Obviously, the same rendering can be applied to the source assets without using the virtual asset.
+Obviously, the same rendering can be applied to local source assets without using the virtual asset.
 
 ```json
 "renders":{
