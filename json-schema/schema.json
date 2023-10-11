@@ -137,16 +137,16 @@
       "$comment": "Add your new fields here. Don't require them here, do that above in the corresponding schema.",
       "type": "object",
       "properties": {
-        "rdr:colormap_name": {
+        "colormap_name": {
           "type": "string"
         },
-        "rdr:colormap": {
+        "colormap": {
           "type": "object"
         },
-        "rdr:color_formula": {
+        "color_formula": {
           "type": "string"
         },
-        "rdr:minmax_zoom": {
+        "minmax_zoom": {
           "type": "array",
           "items": {
             "type": "number"
@@ -154,7 +154,7 @@
         }
       },
       "patternProperties": {
-        "^(?!rdr:)": {
+        "^(?!)": {
           "$comment": "Above, change `template` to the prefix of this extension"
         }
       },

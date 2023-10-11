@@ -1,6 +1,12 @@
 {
   "type": "Feature",
-  "stac_version": "1.0.0-rc.2",
+  "stac_version": "1.0.0",
+  "stac_extensions": [
+    "https://stac-extensions.github.io/eo/v1.0.0/schema.json",
+    "https://stac-extensions.github.io/projection/v1.0.0/schema.json",
+    "https://stac-extensions.github.io/view/v1.0.0/schema.json",
+    "https://stac-extensions.github.io/virtual-assets/v1.0.0/schema.json"
+  ],
   "id": "LC08_L1TP_044033_20210305_20210312_01_T1",
   "properties": {
     "gsd": 30,
@@ -61,14 +67,6 @@
     }
   ],
   "assets": {
-    "thumbnail": {
-      "href": "https://landsat-pds.s3.us-west-2.amazonaws.com/c1/L8/044/033/LC08_L1TP_044033_20210305_20210312_01_T1/LC08_L1TP_044033_20210305_20210312_01_T1_thumb_large.jpg",
-      "type": "image/jpeg",
-      "title": "Thumbnail",
-      "roles": [
-        "thumbnail"
-      ]
-    },
     "index": {
       "href": "https://landsat-pds.s3.us-west-2.amazonaws.com/c1/L8/044/033/LC08_L1TP_044033_20210305_20210312_01_T1/index.html",
       "type": "application/html",
@@ -232,6 +230,66 @@
         }
       ],
       "gsd": 100
+    },
+    "NDVI": {
+      "roles": [
+        "virtual",
+        "data",
+        "index"
+      ],
+      "type": "image/vnd.stac.geotiff; cloud-optimized=true",
+      "href": "https://landsat-pds.s3.us-west-2.amazonaws.com/c1/L8/044/033/LC08_L1TP_044033_20210305_20210312_01_T1#/assets/NDVI",
+      "vrt:hrefs": [
+        "#/assets/B4",
+        "#/assets/B5"
+      ],
+      "title": "Normalized Difference Vegetation Index",
+      "vrt:algorithm": "band_arithmetic",
+      "vrt:algorithm_opts": {
+        "expression": "(B05-B04)/(B05+B04)"
+      },
+      "vrt:rescale": [
+        [
+          -1,
+          1
+        ]
+      ]
+    }
+  },
+  "renders": {
+    "thumbnail": {
+      "title": "Thumbnail",
+      "assets": [
+        "B4",
+        "B3",
+        "B2"
+      ],
+      "rescale": [
+        [
+          0,
+          150
+        ]
+      ],
+      "colormap_name": "rainbow",
+      "resampling": "bilinear",
+      "bidx": [
+        1
+      ],
+      "width": 1024,
+      "height": 1024,
+      "bands": [
+        "B4",
+        "B3",
+        "B2"
+      ]
+    },
+    "ndvi": {
+      "title": "Normalized Difference Vegetation Index",
+      "assets": [
+        "ndvi"
+      ],
+      "resampling": "average",
+      "colormap_name": "ylgn"
     }
   },
   "bbox": [
@@ -240,32 +298,5 @@
     -120.31321,
     39.95894
   ],
-  "stac_extensions": [
-    "https://stac-extensions.github.io/eo/v1.0.0/schema.json",
-    "https://stac-extensions.github.io/projection/v1.0.0/schema.json",
-    "https://stac-extensions.github.io/view/v1.0.0/schema.json",
-    "https://stac-extensions.github.io/virtual-assets/v1.0.0/schema.json"
-  ],
-  "collection": "landsat-8-l1-c1",
-  "virtual:assets": {
-    "NDVI": {
-      "href": [
-        "#B4",
-        "#B5"
-      ],
-      "title": "Normalized Difference Vegetation Index",
-      "processing:expression": {
-        "format": "rio-calc",
-        "expression": "(B05–B04)/(B05+B04)"
-      },
-      "raster:bands": [
-        {
-          "statistics": {
-            "minimum": -1,
-            "maximum": 1
-          }
-        }
-      ]
-    }
-  }
+  "collection": "landsat-8-l1-c1"
 }
