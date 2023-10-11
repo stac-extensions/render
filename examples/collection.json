@@ -2,12 +2,13 @@
   "stac_version": "1.0.0",
   "stac_extensions": [
     "https://stac-extensions.github.io/item-assets/v1.0.0/schema.json",
-    "https://stac-extensions.github.io/render/v1.0.0/schema.json"
+    "https://stac-extensions.github.io/render/v1.0.0/schema.json",
+    "https://stac-extensions.github.io/virtual-assets/v1.0.0/schema.json"
   ],
   "type": "Collection",
-  "id": "collection",
-  "title": "A title",
-  "description": "A description",
+  "id": "senitnel2-l2a",
+  "title": "Sentinel-2 L2A",
+  "description": "Sentinel-2 L2A data",
   "license": "Apache-2.0",
   "extent": {
     "spatial": {
@@ -29,29 +30,46 @@
       ]
     }
   },
-  "template:new_field": "test",
-  "template:xyz": {
-    "x": 1,
-    "y": 2,
-    "z": 3
-  },
-  "template:another_one": [
-    1,
-    2,
-    3
-  ],
-  "assets": {
-    "example": {
-      "href": "https://example.com/examples/file.xyz",
-      "template:new_field": "test"
+  "assets": {},
+  "item_assets": {
+    "ndvi": {
+      "roles": [
+        "virtual",
+        "data",
+        "index"
+      ],
+      "type": "image/vnd.stac.geotiff; cloud-optimized=true",
+      "vrt:hrefs": [
+        {
+          "key": "red",
+          "href": "#/assets/red"
+        },
+        {
+          "key": "nir",
+          "href": "#/assets/nir"
+        }
+      ],
+      "title": "Normalized Difference Vegetation Index",
+      "vrt:algorithm": "band_arithmetic",
+      "vrt:algorithm_opts": {
+        "expression": "(B05-B04)/(B05+B04)",
+        "rescale": [
+          [
+            -1,
+            1
+          ]
+        ]
+      }
     }
   },
-  "item_assets": {
-    "data": {
-      "roles": [
-        "data"
+  "renders": {
+    "ndvi": {
+      "title": "Normalized Difference Vegetation Index",
+      "assets": [
+        "ndvi"
       ],
-      "template:new_field": "test"
+      "resampling": "average",
+      "colormap_name": "ylgn"
     }
   },
   "summaries": {
@@ -62,12 +80,8 @@
   },
   "links": [
     {
-      "href": "https://example.com/examples/collection.json",
+      "href": "https://example.com/examples/collection/sentinel2-l2a.json",
       "rel": "self"
-    },
-    {
-      "href": "https://example.com/examples/item.json",
-      "rel": "item"
     }
   ]
 }

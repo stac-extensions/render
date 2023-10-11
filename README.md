@@ -5,7 +5,7 @@
 - **Field Name Prefix:** rdr
 - **Scope:** Item, Collection
 - **Extension [Maturity Classification](https://github.com/radiantearth/stac-spec/tree/master/extensions/README.md#extension-maturity):** Proposal
-- **Owner**: @emmanuelmathot @abarciauskas-bgse
+- **Owner**: @emmanuelmathot @abarciauskas-bgse @smohiudd
 
 This document explains the Rendering Extension to the [SpatioTemporal Asset Catalog](https://github.com/radiantearth/stac-spec) (STAC) specification.
 
@@ -13,6 +13,8 @@ Rendering extension aims at providings consumers with the possible rendering of 
 
 - Examples:
   - [Landsat-8 example](examples/item-landsat8.json): Shows the basic usage of the extension in a landsat-8 STAC Item
+  - [Sentinel-2 example](examples/item-sentinel2.json): Shows the basic usage of the extension in a Sentinel-2 STAC Item
+  - [Collection example](examples/collection.json): Shows the basic usage of the extension in a collection
 - [JSON Schema](json-schema/schema.json)
 - [Changelog](./CHANGELOG.md)
 
@@ -60,7 +62,8 @@ The assets MUST be local assets defined in the same item.
 ## Positioning
 
 The positioning of the source assets is defined by their position in the `assets` array.
-Typically, in the case of the composition of a RGB image, the first pointer would be the red band, the second the green band and the third the blue band.
+Typically, in the case of the composition of a RGB image, the first pointer would be the red band,
+the second the green band and the third the blue band.
 
 ```json
 "assets": [ "red", "green", "blue" ]
@@ -79,7 +82,8 @@ It is specified as a 2 dimensions array of delimited Min,Max range per band.
 ]
 ```
 
-A prescaling can also be performed according to the `offset` and `scale` fields value of the [raster](https://github.com/stac-extensions/raster) extension.
+A prescaling can also be performed according to the `offset` and `scale` fields value of the
+[raster](https://github.com/stac-extensions/raster) extension.
 
 ## Dynamic tile servers integration
 
@@ -211,7 +215,8 @@ Obviously, the same rendering can be applied to the source assets without using 
 
 ## Links
 
-It is highly suggested to have a web map link in the `links` section of the STAC Item as described in the [Web Map Link extension](https://github.com/stac-extensions/web-map-links) to allow application to
+It is highly suggested to have a web map link in the `links` section of the STAC Item as described in the
+[Web Map Link extension](https://github.com/stac-extensions/web-map-links) to allow application to
 find the tiling endpoint of the dynamic tile server.
 
 ## Contributing

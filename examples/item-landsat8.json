@@ -5,6 +5,7 @@
     "https://stac-extensions.github.io/eo/v1.0.0/schema.json",
     "https://stac-extensions.github.io/projection/v1.0.0/schema.json",
     "https://stac-extensions.github.io/view/v1.0.0/schema.json",
+    "https://stac-extensions.github.io/render/v1.0.0/schema.json",
     "https://stac-extensions.github.io/virtual-assets/v1.0.0/schema.json"
   ],
   "id": "LC08_L1TP_044033_20210305_20210312_01_T1",
@@ -64,6 +65,12 @@
       "rel": "xyz",
       "type": "image/png",
       "title": "RGB composite visualized through a XYZ"
+    },
+    {
+      "rel": "collection",
+      "href": "https://landsat-stac.s3.amazonaws.com/collections/landsat-8-l1.json",
+      "type": "application/json",
+      "title": "The full collection"
     }
   ],
   "assets": {
@@ -231,7 +238,7 @@
       ],
       "gsd": 100
     },
-    "NDVI": {
+    "ndvi": {
       "roles": [
         "virtual",
         "data",
@@ -240,20 +247,26 @@
       "type": "image/vnd.stac.geotiff; cloud-optimized=true",
       "href": "https://landsat-pds.s3.us-west-2.amazonaws.com/c1/L8/044/033/LC08_L1TP_044033_20210305_20210312_01_T1#/assets/NDVI",
       "vrt:hrefs": [
-        "#/assets/B4",
-        "#/assets/B5"
+        {
+          "key": "B4",
+          "href": "#/assets/B4"
+        },
+        {
+          "key": "B5",
+          "href": "#/assets/B5"
+        }
       ],
       "title": "Normalized Difference Vegetation Index",
       "vrt:algorithm": "band_arithmetic",
       "vrt:algorithm_opts": {
-        "expression": "(B05-B04)/(B05+B04)"
-      },
-      "vrt:rescale": [
-        [
-          -1,
-          1
+        "expression": "(B05-B04)/(B05+B04)",
+        "rescale": [
+          [
+            -1,
+            1
+          ]
         ]
-      ]
+      }
     }
   },
   "renders": {

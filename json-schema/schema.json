@@ -14,13 +14,14 @@
           "type": "object",
           "required": [
             "type",
-            "assets"
+            "assets",
+            "renders"
           ],
           "properties": {
             "type": {
               "const": "Feature"
             },
-            "assets": {
+            "renders": {
               "$comment": "This validates the fields in Item Assets, but does not require them.",
               "type": "object",
               "additionalProperties": {
@@ -37,7 +38,8 @@
       "allOf": [
         {
           "required": [
-            "type"
+            "type",
+            "renders"
           ],
           "properties": {
             "type": {
@@ -56,7 +58,7 @@
             "assets"
           ],
           "properties": {
-            "assets": {
+            "renders": {
               "type": "object",
               "not": {
                 "additionalProperties": {
@@ -72,42 +74,6 @@
                   }
                 }
               }
-            }
-          }
-        },
-        {
-          "$comment": "This is the schema for the fields in Item Asset Definitions. It doesn't require any fields.",
-          "required": [
-            "item_assets"
-          ],
-          "properties": {
-            "item_assets": {
-              "type": "object",
-              "not": {
-                "additionalProperties": {
-                  "not": {
-                    "allOf": [
-                      {
-                        "$ref": "#/definitions/require_any_field"
-                      },
-                      {
-                        "$ref": "#/definitions/fields"
-                      }
-                    ]
-                  }
-                }
-              }
-            }
-          }
-        },
-        {
-          "$comment": "This is the schema for the fields in Summaries. By default, only checks the existence of the properties, but not the schema of the summaries.",
-          "required": [
-            "summaries"
-          ],
-          "properties": {
-            "summaries": {
-              "$ref": "#/definitions/require_any_field"
             }
           }
         }
@@ -131,12 +97,47 @@
     },
     "require_any_field": {
       "$comment": "Please list all fields here so that we can force the existence of one of them in other parts of the schemas.",
-      "anyOf": []
+      "anyOf": [
+        {"type": "object", "required": ["assets"]},
+        {"type": "object", "required": ["title"]},
+        {"type": "object", "required": ["rescale"]},
+        {"type": "object", "required": ["nodata"]},
+        {"type": "object", "required": ["colormap_name"]},
+        {"type": "object", "required": ["colormap"]},
+        {"type": "object", "required": ["color_formula"]},
+        {"type": "object", "required": ["resampling"]},
+        {"type": "object", "required": ["expression"]},
+        {"type": "object", "required": ["minmax_zoom"]}
+      ]
     },
     "fields": {
       "$comment": "Add your new fields here. Don't require them here, do that above in the corresponding schema.",
       "type": "object",
+      "required": [
+        "assets"
+      ],
       "properties": {
+        "assets": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "title": {
+          "type": "string"
+        },
+        "rescale": {
+          "type": "array",
+          "items": {
+            "type": "array",
+            "items": {
+              "type": "number"
+            }
+          }
+        },
+        "nodata": {
+          "type": "number"
+        },
         "colormap_name": {
           "type": "string"
         },
@@ -146,6 +147,12 @@
         "color_formula": {
           "type": "string"
         },
+        "resampling": {
+          "type": "string"
+        },
+        "expression": {
+          "type": "string"
+        },
         "minmax_zoom": {
           "type": "array",
           "items": {
@@ -153,12 +160,7 @@
           }
         }
       },
-      "patternProperties": {
-        "^(?!)": {
-          "$comment": "Above, change `template` to the prefix of this extension"
-        }
-      },
-      "additionalProperties": false
+      "additionalProperties": true
     }
   }
 }
