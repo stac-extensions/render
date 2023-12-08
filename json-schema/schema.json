@@ -54,8 +54,9 @@
       "anyOf": [
         {
           "$comment": "This validates the fields in Collection Assets, but does not require them.",
-          "required": [
-            "assets"
+          "anyOf": [
+            {"type": "object", "required": ["assets"]},
+            {"type": "object", "required": ["item_assets"]}
           ],
           "properties": {
             "renders": {
