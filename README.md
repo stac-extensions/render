@@ -2,7 +2,7 @@
 
 - **Title:** Rendering
 - **Identifier:** <https://stac-extensions.github.io/render/v1.0.0/schema.json>
-- **Field Name Prefix:** rdr
+- **Field Name Prefix:** renders
 - **Scope:** Item, Collection
 - **Extension [Maturity Classification](https://github.com/radiantearth/stac-spec/tree/master/extensions/README.md#extension-maturity):** Proposal
 - **Owner**: @emmanuelmathot @abarciauskas-bgse @smohiudd
@@ -113,8 +113,7 @@ by simply specifying the `url` and `assets` query parameters.
 | `colormap`      | `colormap`                             | Color map JSON definition as defined in `colormap` object of the `asset` (overrides `colormap_name` if present )                    |
 | `color_formula` | `color_formula`                        | Color formula as defined in `color_formula` field of the `asset`                                                                    |
 | `resampling`    | `resampling`                           | Resampling method to use when reprojecting the raster.                                                                              |
-
-Next sections describe some examples of titiler integration.
+| `bidx`    | `bidx`                           | Dataset band indexes                                                                            |
 
 #### Shortwave Infra-red visual thermal signature example
 
