@@ -39,7 +39,7 @@ The fields in the table below can be used in these parts of STAC documents:
 | assets        | \[string] | **REQUIRED**. Array of asset keys [referencing the assets](#assets-reference) that are used to make the rendering                                                        |
 | title         | string    | Optional title of the rendering                                                                                                                                          |
 | rescale       | \[float]  | 2 dimensions array of delimited Min,Max range per band. If not provided, the data will not be rescaled.                                                                  |
-| nodata        | float     | Nodata value to use for the referenced assets.                                                                                                                           |
+| nodata        | float, string     | Nodata value to use for the referenced assets.                                                                                                                           |
 | colormap_name | string    | Color map identifier that must be applied for a raster band                                                                                                              |
 | colormap      | object    | [Color map JSON definition](https://developmentseed.org/titiler/advanced/rendering/#custom-colormaps) that must be applied for a raster band                             |
 | color_formula | string    | [Color formula](https://developmentseed.org/titiler/advanced/rendering/#color-formula) that must be applied for a raster band                                            |
