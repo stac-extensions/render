@@ -54,8 +54,9 @@
       "anyOf": [
         {
           "$comment": "This validates the fields in Collection Assets, but does not require them.",
-          "required": [
-            "assets"
+          "anyOf": [
+            {"type": "object", "required": ["assets"]},
+            {"type": "object", "required": ["item_assets"]}
           ],
           "properties": {
             "renders": {
@@ -107,7 +108,8 @@
         {"type": "object", "required": ["color_formula"]},
         {"type": "object", "required": ["resampling"]},
         {"type": "object", "required": ["expression"]},
-        {"type": "object", "required": ["minmax_zoom"]}
+        {"type": "object", "required": ["minmax_zoom"]},
+        {"type": "object", "required": ["bidx"]}
       ]
     },
     "fields": {
@@ -136,7 +138,7 @@
           }
         },
         "nodata": {
-          "type": "number"
+          "type": ["number","string"]
         },
         "colormap_name": {
           "type": "string"
@@ -154,6 +156,12 @@
           "type": "string"
         },
         "minmax_zoom": {
+          "type": "array",
+          "items": {
+            "type": "number"
+          }
+        },
+        "bidx":{
           "type": "array",
           "items": {
             "type": "number"

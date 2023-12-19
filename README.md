@@ -2,7 +2,7 @@
 
 - **Title:** Rendering
 - **Identifier:** <https://stac-extensions.github.io/render/v1.0.0/schema.json>
-- **Field Name Prefix:** rdr
+- **Field Name Prefix:** renders
 - **Scope:** Item, Collection
 - **Extension [Maturity Classification](https://github.com/radiantearth/stac-spec/tree/master/extensions/README.md#extension-maturity):** Proposal
 - **Owner**: @emmanuelmathot @abarciauskas-bgse @smohiudd
@@ -39,7 +39,7 @@ The fields in the table below can be used in these parts of STAC documents:
 | assets        | \[string] | **REQUIRED**. Array of asset keys [referencing the assets](#assets-reference) that are used to make the rendering                                                        |
 | title         | string    | Optional title of the rendering                                                                                                                                          |
 | rescale       | \[float]  | 2 dimensions array of delimited Min,Max range per band. If not provided, the data will not be rescaled.                                                                  |
-| nodata        | float     | Nodata value to use for the referenced assets.                                                                                                                           |
+| nodata        | float, string     | Nodata value to use for the referenced assets.                                                                                                                           |
 | colormap_name | string    | Color map identifier that must be applied for a raster band                                                                                                              |
 | colormap      | object    | [Color map JSON definition](https://developmentseed.org/titiler/advanced/rendering/#custom-colormaps) that must be applied for a raster band                             |
 | color_formula | string    | [Color formula](https://developmentseed.org/titiler/advanced/rendering/#color-formula) that must be applied for a raster band                                            |
@@ -113,8 +113,7 @@ by simply specifying the `url` and `assets` query parameters.
 | `colormap`      | `colormap`                             | Color map JSON definition as defined in `colormap` object of the `asset` (overrides `colormap_name` if present )                    |
 | `color_formula` | `color_formula`                        | Color formula as defined in `color_formula` field of the `asset`                                                                    |
 | `resampling`    | `resampling`                           | Resampling method to use when reprojecting the raster.                                                                              |
-
-Next sections describe some examples of titiler integration.
+| `bidx`    | `bidx`                           | Dataset band indexes                                                                            |
 
 #### Shortwave Infra-red visual thermal signature example
 
