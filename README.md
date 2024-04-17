@@ -120,13 +120,15 @@ by simply specifying the `url` and `assets` query parameters.
 From the [Sentinel-2 item](https://github.com/stac-extensions/virtual-assets/blob/main/examples/item-sentinel2.json):
 
 ```json
-"renders":{
-  "sir":
-  {
-    "title": "Shortwave Infra-red",
-    "assets": [ "swir22", "nir2",  "red" ],
-    "rescale": [[0,5000],[0,7000],[0,9000]],
-    "resampling": "nearest"
+"properties":{
+  "renders":{
+    "sir":
+    {
+      "title": "Shortwave Infra-red",
+      "assets": [ "swir22", "nir2",  "red" ],
+      "rescale": [[0,5000],[0,7000],[0,9000]],
+      "resampling": "nearest"
+    }
   }
 }
 ```
@@ -167,15 +169,18 @@ the NDVI asset could also be downloaded as a standalone asset.
     },
   }
 },
-"renders":{
-  "ndvi":
-  {
-    "title": "Normalized Difference Vegetation Index",
-    "assets": [ "ndvi" ],
-    "resampling": "average",
-    "colormap_name": "ylgn"
+"properties":{
+  "renders":{
+    "ndvi":
+    {
+      "title": "Normalized Difference Vegetation Index",
+      "assets": [ "ndvi" ],
+      "resampling": "average",
+      "colormap_name": "ylgn"
+    }
   }
 }
+
 ```
 
 If this case, the parameters to titiler must be extracted from both the virtual asset definition and the render object.
@@ -199,15 +204,17 @@ Result:  Landsat Surface Reflectance Normalized Difference Vegetation Index (NDV
 Obviously, the same rendering can be applied to local source assets without using the virtual asset.
 
 ```json
-"renders":{
-  "ndvi":
-  {
-    "title": "Normalized Difference Vegetation Index",
-    "assets": [ "B05", "B04" ],
-    "resampling": "average",
-    "colormap_name": "ylgn",
-    "expression": "(B05–B04)/(B05+B04)",
-    "rescale": [[-1,1]]
+"properties":{
+  "renders":{
+    "ndvi":
+    {
+      "title": "Normalized Difference Vegetation Index",
+      "assets": [ "B05", "B04" ],
+      "resampling": "average",
+      "colormap_name": "ylgn",
+      "expression": "(B05–B04)/(B05+B04)",
+      "rescale": [[-1,1]]
+    }
   }
 }
 ```
