@@ -29,6 +29,37 @@
               }
             }
           }
+        },
+        {
+          "if": {
+            "properties": {
+              "stac_extensions": {
+                "contains": {
+                  "type": "string",
+                  "pattern": "https:\/\/stac-extensions\\.github\\.io\/web-map-links\/.*"
+                }
+              }
+            }
+          },
+          "then": {
+            "properties": {
+              "links": {
+                "type": "array",
+                "contains": {
+                  "type": "object",
+                  "required": [
+                    "rel",
+                    "render"
+                  ],
+                  "properties": {
+                    "render": {
+                      "type": "string"
+                    }
+                  }
+                }
+              }
+            }
+          }
         }
       ]
     },
@@ -55,8 +86,18 @@
         {
           "$comment": "This validates the fields in Collection Assets, but does not require them.",
           "anyOf": [
-            {"type": "object", "required": ["assets"]},
-            {"type": "object", "required": ["item_assets"]}
+            {
+              "type": "object",
+              "required": [
+                "assets"
+              ]
+            },
+            {
+              "type": "object",
+              "required": [
+                "item_assets"
+              ]
+            }
           ],
           "properties": {
             "renders": {
@@ -99,17 +140,72 @@
     "require_any_field": {
       "$comment": "Please list all fields here so that we can force the existence of one of them in other parts of the schemas.",
       "anyOf": [
-        {"type": "object", "required": ["assets"]},
-        {"type": "object", "required": ["title"]},
-        {"type": "object", "required": ["rescale"]},
-        {"type": "object", "required": ["nodata"]},
-        {"type": "object", "required": ["colormap_name"]},
-        {"type": "object", "required": ["colormap"]},
-        {"type": "object", "required": ["color_formula"]},
-        {"type": "object", "required": ["resampling"]},
-        {"type": "object", "required": ["expression"]},
-        {"type": "object", "required": ["minmax_zoom"]},
-        {"type": "object", "required": ["bidx"]}
+        {
+          "type": "object",
+          "required": [
+            "assets"
+          ]
+        },
+        {
+          "type": "object",
+          "required": [
+            "title"
+          ]
+        },
+        {
+          "type": "object",
+          "required": [
+            "rescale"
+          ]
+        },
+        {
+          "type": "object",
+          "required": [
+            "nodata"
+          ]
+        },
+        {
+          "type": "object",
+          "required": [
+            "colormap_name"
+          ]
+        },
+        {
+          "type": "object",
+          "required": [
+            "colormap"
+          ]
+        },
+        {
+          "type": "object",
+          "required": [
+            "color_formula"
+          ]
+        },
+        {
+          "type": "object",
+          "required": [
+            "resampling"
+          ]
+        },
+        {
+          "type": "object",
+          "required": [
+            "expression"
+          ]
+        },
+        {
+          "type": "object",
+          "required": [
+            "minmax_zoom"
+          ]
+        },
+        {
+          "type": "object",
+          "required": [
+            "bidx"
+          ]
+        }
       ]
     },
     "fields": {
@@ -138,7 +234,10 @@
           }
         },
         "nodata": {
-          "type": ["number","string"]
+          "type": [
+            "number",
+            "string"
+          ]
         },
         "colormap_name": {
           "type": "string"
@@ -161,7 +260,7 @@
             "type": "number"
           }
         },
-        "bidx":{
+        "bidx": {
           "type": "array",
           "items": {
             "type": "number"

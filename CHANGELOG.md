@@ -8,6 +8,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Added
 
+- Adds render cross reference in links ([#2](https://github.com/stac-extensions/render/issues/2))
+
 ### Changed
 
 ### Deprecated
