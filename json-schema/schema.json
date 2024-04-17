@@ -5,7 +5,7 @@
   "description": "STAC Rendering Extension for STAC Items and STAC Collections.",
   "oneOf": [
     {
-      "$comment": "This is the schema for STAC Items. Remove this object if this extension only applies to Collections.",
+      "$comment": "This is the schema for STAC Items.",
       "allOf": [
         {
           "$ref": "#/definitions/stac_extensions"
@@ -14,18 +14,23 @@
           "type": "object",
           "required": [
             "type",
-            "assets",
-            "renders"
+            "properties",
+            "assets"
           ],
           "properties": {
             "type": {
               "const": "Feature"
             },
-            "renders": {
-              "$comment": "This validates the fields in Item Assets, but does not require them.",
+            "properties": {
               "type": "object",
-              "additionalProperties": {
-                "$ref": "#/definitions/fields"
+              "required": ["renders"],
+              "properties": {
+                "renders": {
+                  "type": "object",
+                  "additionalProperties": {
+                    "$ref": "#/definitions/fields"
+                  }
+                }
               }
             }
           }

@@ -31,7 +31,43 @@
     "landsat:wrs_row": "33",
     "datetime": "2021-03-05T18:45:37.619485Z",
     "created": "2021-03-16T01:40:56.703Z",
-    "updated": "2021-03-16T01:40:56.703Z"
+    "updated": "2021-03-16T01:40:56.703Z",
+    "renders": {
+      "thumbnail": {
+        "title": "Thumbnail",
+        "assets": [
+          "B4",
+          "B3",
+          "B2"
+        ],
+        "rescale": [
+          [
+            0,
+            150
+          ]
+        ],
+        "colormap_name": "rainbow",
+        "resampling": "bilinear",
+        "bidx": [
+          1
+        ],
+        "width": 1024,
+        "height": 1024,
+        "bands": [
+          "B4",
+          "B3",
+          "B2"
+        ]
+      },
+      "ndvi": {
+        "title": "Normalized Difference Vegetation Index",
+        "assets": [
+          "ndvi"
+        ],
+        "resampling": "average",
+        "colormap_name": "ylgn"
+      }
+    }
   },
   "geometry": {
     "type": "Polygon",
@@ -281,42 +317,6 @@
           ]
         ]
       }
-    }
-  },
-  "renders": {
-    "thumbnail": {
-      "title": "Thumbnail",
-      "assets": [
-        "B4",
-        "B3",
-        "B2"
-      ],
-      "rescale": [
-        [
-          0,
-          150
-        ]
-      ],
-      "colormap_name": "rainbow",
-      "resampling": "bilinear",
-      "bidx": [
-        1
-      ],
-      "width": 1024,
-      "height": 1024,
-      "bands": [
-        "B4",
-        "B3",
-        "B2"
-      ]
-    },
-    "ndvi": {
-      "title": "Normalized Difference Vegetation Index",
-      "assets": [
-        "ndvi"
-      ],
-      "resampling": "average",
-      "colormap_name": "ylgn"
     }
   },
   "bbox": [

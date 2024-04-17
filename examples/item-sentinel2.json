@@ -60,7 +60,32 @@
     "sentinel:product_id": "S2B_MSIL2A_20210221T095029_N0214_R079_T33SVB_20210221T115149",
     "sentinel:data_coverage": 100,
     "eo:cloud_cover": 21.22,
-    "sentinel:valid_cloud_cover": true
+    "sentinel:valid_cloud_cover": true,
+    "renders": {
+      "sir": {
+        "title": "Shortwave Infra-red",
+        "assets": [
+          "swir22",
+          "nir2",
+          "red"
+        ],
+        "rescale": [
+          [
+            0,
+            5000
+          ],
+          [
+            0,
+            7000
+          ],
+          [
+            0,
+            9000
+          ]
+        ],
+        "resampling": "nearest"
+      }
+    }
   },
   "collection": "sentinel-s2-l2a-cogs",
   "assets": {
@@ -615,31 +640,6 @@
         0,
         1
       ]
-    }
-  },
-  "renders": {
-    "sir": {
-      "title": "Shortwave Infra-red",
-      "assets": [
-        "swir22",
-        "nir2",
-        "red"
-      ],
-      "rescale": [
-        [
-          0,
-          5000
-        ],
-        [
-          0,
-          7000
-        ],
-        [
-          0,
-          9000
-        ]
-      ],
-      "resampling": "nearest"
     }
   },
   "links": [
