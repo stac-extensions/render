@@ -225,6 +225,22 @@ It is highly suggested to have a web map link in the `links` section of the STAC
 [Web Map Link extension](https://github.com/stac-extensions/web-map-links) to allow application to
 find the tiling endpoint of the dynamic tile server.
 
+### Additional Attributes
+
+A [web map link](https://github.com/stac-extensions/web-map-links) can be extended with the attribute `render`
+with a value corresponding to the key of the render object in the `renders` field
+in order to provide a cross link to the render object.
+
+```json
+{
+  "rel": "xyz",
+  "type": "image/png",
+  "title": "NDVI",
+  "href": "https://api.cogeo.xyz/stac/preview.png?url=https://raw.githubusercontent.com/stac-extensions/raster/main/examples/item-landsat8.json&expression=(B5–B4)/(B5+B4)&max_size=512&width=512&resampling_method=average&rescale=-1,1&color_map=ylgn&return_mask=true",
+  "render": "ndvi"
+}
+```
+
 ## Contributing
 
 All contributions are subject to the

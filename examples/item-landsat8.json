@@ -6,7 +6,8 @@
     "https://stac-extensions.github.io/projection/v1.0.0/schema.json",
     "https://stac-extensions.github.io/view/v1.0.0/schema.json",
     "https://stac-extensions.github.io/render/v1.0.0/schema.json",
-    "https://stac-extensions.github.io/virtual-assets/v1.0.0/schema.json"
+    "https://stac-extensions.github.io/virtual-assets/v1.0.0/schema.json",
+    "https://stac-extensions.github.io/web-map-links/v1.2.0/schema.json"
   ],
   "id": "LC08_L1TP_044033_20210305_20210312_01_T1",
   "properties": {
@@ -101,6 +102,19 @@
       "rel": "xyz",
       "type": "image/png",
       "title": "RGB composite visualized through a XYZ"
+    },
+    {
+      "rel": "xyz",
+      "type": "image/png",
+      "title": "NDVI",
+      "href": "https://api.cogeo.xyz/stac/preview.png?url=https://raw.githubusercontent.com/stac-extensions/raster/main/examples/item-landsat8.json&expression=(B5–B4)/(B5+B4)&max_size=512&width=512&resampling_method=average&rescale=-1,1&color_map=ylgn&return_mask=true",
+      "render": "ndvi"
+    },
+    {
+      "rel": "xyz",
+      "type": "image/png",
+      "title": "NDVI",
+      "href": "https://api.cogeo.xyz/stac/preview.png?url=https://raw.githubusercontent.com/stac-extensions/raster/main/examples/item-landsat8.json&expression=(B5–B4)/(B5+B4)&max_size=512&width=512&resampling_method=average&rescale=-1,1&color_map=ylgn&return_mask=true"
     },
     {
       "rel": "collection",
