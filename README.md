@@ -125,7 +125,7 @@ From the [Sentinel-2 item](https://github.com/stac-extensions/virtual-assets/blo
     "sir":
     {
       "title": "Shortwave Infra-red",
-      "assets": [ "swir22", "nir2",  "red" ],
+      "assets": [ "swir22", "nir",  "red" ],
       "rescale": [[0,5000],[0,7000],[0,9000]],
       "resampling": "nearest"
     }

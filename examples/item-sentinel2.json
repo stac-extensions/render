@@ -65,9 +65,9 @@
       "sir": {
         "title": "Shortwave Infra-red",
         "assets": [
-          "swir22",
-          "nir2",
-          "red"
+          "B12",
+          "B08",
+          "B04"
         ],
         "rescale": [
           [
