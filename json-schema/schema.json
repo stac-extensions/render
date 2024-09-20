@@ -257,7 +257,7 @@
           "type": "string"
         },
         "expression": {
-          "type": "string"
+          "type": ["string", "object", "array"]
         },
         "minmax_zoom": {
           "type": "array",
