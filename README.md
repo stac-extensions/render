@@ -4,7 +4,7 @@
 - **Identifier:** <https://stac-extensions.github.io/render/v1.0.0/schema.json>
 - **Field Name Prefix:** renders
 - **Scope:** Item, Collection
-- **Extension [Maturity Classification](https://github.com/radiantearth/stac-spec/tree/master/extensions/README.md#extension-maturity):** Proposal
+- **Extension [Maturity Classification](https://github.com/radiantearth/stac-spec/tree/master/extensions/README.md#extension-maturity):** Pilot
 - **Owner**: @emmanuelmathot @abarciauskas-bgse @smohiudd
 
 This document explains the Rendering Extension to the [SpatioTemporal Asset Catalog](https://github.com/radiantearth/stac-spec) (STAC) specification.
