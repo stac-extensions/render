@@ -1,7 +1,7 @@
 # Rendering Extension Specification
 
 - **Title:** Rendering
-- **Identifier:** <https://stac-extensions.github.io/render/v1.0.0/schema.json>
+- **Identifier:** <https://stac-extensions.github.io/render/v2.0.0/schema.json>
 - **Field Name Prefix:** renders
 - **Scope:** Item, Collection
 - **Extension [Maturity Classification](https://github.com/radiantearth/stac-spec/tree/master/extensions/README.md#extension-maturity):** Pilot
