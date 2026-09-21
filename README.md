@@ -41,8 +41,8 @@ The fields in the table below can be used in these parts of STAC documents:
 | rescale       | \[float]  | 2 dimensions array of delimited Min,Max range per band. If not provided, the data will not be rescaled.                                                                  |
 | nodata        | float, string     | Nodata value to use for the referenced assets.                                                                                                                           |
 | colormap_name | string    | Color map identifier that must be applied for a raster band                                                                                                              |
-| colormap      | object    | [Color map JSON definition](https://developmentseed.org/titiler/advanced/rendering/#custom-colormaps) that must be applied for a raster band                             |
-| color_formula | string    | [Color formula](https://developmentseed.org/titiler/advanced/rendering/#color-formula) that must be applied for a raster band                                            |
+| colormap      | object    | [Color map JSON definition](https://developmentseed.org/titiler/user_guide/rendering/#custom-colormaps) that must be applied for a raster band                             |
+| color_formula | string    | [Color formula](https://developmentseed.org/titiler/user_guide/rendering/#color-formula) that must be applied for a raster band                                            |
 | resampling    | string    | Resampling algorithm to apply to the referenced assets. See [GDAL resampling algorithm](https://gdal.org/programs/gdalwarp.html#cmdoption-gdalwarp-r) for some examples. |
 | expression    | string, object, array | Band arithmetic formula to apply to the referenced assets. The format is defined by the rendering application, e.g. a [TiTiler](https://developmentseed.org/titiler/) band math string or a [MapLibre](https://maplibre.org/maplibre-style-spec/expressions/) style expression array. |
 | minmax_zoom   | \[int]    | Zoom levels range applicable for the visualization                                                                                                                       |
@@ -139,7 +139,12 @@ From the [Sentinel-2 item](https://github.com/stac-extensions/virtual-assets/blo
 | assets    | Assets keys defined in the `assets` fields          | `B12,B8A,B04`                                                                                |
 | rescale   | Delimited Min,Max bounds defined in `rescale` field | `0,5000,0,7000,0,9000`                                                                       |
 
-URL: [`https://api.cogeo.xyz/stac/crop/14.869,37.682,15.113,37.862/256x256.png?url=https://raw.githubusercontent.com/stac-extensions/raster/main/examples/item-sentinel2.json&assets=B12,B8A,B04&resampling_method=average&rescale=0,5000,0,7000,0,9000&return_mask=true`](https://api.cogeo.xyz/stac/crop/14.869,37.682,15.113,37.862/256x256.png?url=https://raw.githubusercontent.com/stac-extensions/raster/main/examples/item-sentinel2.json&assets=B12,B8A,B04&resampling_method=average&rescale=0,5000,0,7000,0,9000&return_mask=true)
+Example URL. The public demo instance used for this example, `api.cogeo.xyz`, no longer exists.
+Deploy your own [titiler](https://github.com/developmentseed/titiler) instance to reproduce it:
+
+```text
+https://<titiler-endpoint>/stac/crop/14.869,37.682,15.113,37.862/256x256.png?url=https://raw.githubusercontent.com/stac-extensions/raster/main/examples/item-sentinel2.json&assets=B12,B8A,B04&resampling_method=average&rescale=0,5000,0,7000,0,9000&return_mask=true
+```
 
 **Result**: Lava thermal signature of Mount Etna eruption (February 2021)
 
@@ -193,13 +198,14 @@ If this case, the parameters to titiler must be extracted from both the virtual 
 | colormap          | Color map JSON definition as defined in `colormap_name`                          | `ylgn`                                                                                      |
 | resampling_method | Resampling method to use when reprojecting the raster as defined in `resampling` | `average`                                                                                   |
 
-URL:
+Example URL. The public demo instance used for this example, `api.cogeo.xyz`, no longer exists.
+Deploy your own [titiler](https://github.com/developmentseed/titiler) instance to reproduce it:
 
-[`https://api.cogeo.xyz/stac/preview.png?url=https://raw.githubusercontent.com/stac-extensions/raster/main/examples/item-landsat8.json&expression=(B5–B4)/(B5+B4)&max_size=512&width=512&resampling_method=average&rescale=-1,1&color_map=ylgn&return_mask=true`](https://api.cogeo.xyz/stac/preview.png?url=https://raw.githubusercontent.com/stac-extensions/raster/main/examples/item-landsat8.json&expression=(B5–B4)/(B5+B4)&max_size=512&width=512&resampling_method=average&rescale=-1,1&color_map=ylgn&return_mask=true)
+```text
+https://<titiler-endpoint>/stac/preview.png?url=https://raw.githubusercontent.com/stac-extensions/raster/main/examples/item-landsat8.json&expression=(B5–B4)/(B5+B4)&max_size=512&width=512&resampling_method=average&rescale=-1,1&color_map=ylgn&return_mask=true
+```
 
-Result:  Landsat Surface Reflectance Normalized Difference Vegetation Index (NDVI) path 44 row 33.
-
-![sacramento](https://api.cogeo.xyz/stac/preview.png?url=https://raw.githubusercontent.com/stac-extensions/raster/main/examples/item-landsat8.json&expression=(B5–B4)/(B5+B4)&max_size=512&width=512&resampling_method=average&rescale=-1,1&color_map=ylgn&return_mask=true)
+Result: Landsat Surface Reflectance Normalized Difference Vegetation Index (NDVI) path 44 row 33.
 
 Obviously, the same rendering can be applied to local source assets without using the virtual asset.
 
@@ -236,7 +242,7 @@ in order to provide a cross link to the render object.
   "rel": "xyz",
   "type": "image/png",
   "title": "NDVI",
-  "href": "https://api.cogeo.xyz/stac/preview.png?url=https://raw.githubusercontent.com/stac-extensions/raster/main/examples/item-landsat8.json&expression=(B5–B4)/(B5+B4)&max_size=512&width=512&resampling_method=average&rescale=-1,1&color_map=ylgn&return_mask=true",
+  "href": "https://<titiler-endpoint>/stac/preview.png?url=https://raw.githubusercontent.com/stac-extensions/raster/main/examples/item-landsat8.json&expression=(B5–B4)/(B5+B4)&max_size=512&width=512&resampling_method=average&rescale=-1,1&color_map=ylgn&return_mask=true",
   "render": "ndvi"
 }
 ```
