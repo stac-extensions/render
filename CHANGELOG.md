@@ -6,6 +6,13 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+### Changed
+
+- **BREAKING** (to be released as a new major version): `colormap_name` MUST now be a standard
+  [matplotlib colormap](https://matplotlib.org/stable/users/explain/colors/colormaps.html) name (e.g. `viridis`,
+  `YlGn`), to give the field a well-known, renderer-agnostic naming convention instead of an arbitrary free-form
+  string ([#14](https://github.com/stac-extensions/render/issues/14))
+
 ### Fixed
 
 - Document that `expression` accepts `string`, `object`, or `array`, matching the schema ([#8](https://github.com/stac-extensions/render/issues/8))

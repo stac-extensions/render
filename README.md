@@ -40,7 +40,7 @@ The fields in the table below can be used in these parts of STAC documents:
 | title         | string    | Optional title of the rendering                                                                                                                                          |
 | rescale       | \[float]  | 2 dimensions array of delimited Min,Max range per band. If not provided, the data will not be rescaled.                                                                  |
 | nodata        | float, string     | Nodata value to use for the referenced assets.                                                                                                                           |
-| colormap_name | string    | Color map identifier that must be applied for a raster band                                                                                                              |
+| colormap_name | string    | Name of a standard [matplotlib colormap](https://matplotlib.org/stable/users/explain/colors/colormaps.html) (e.g. `viridis`, `YlGn`) to apply to a raster band. |
 | colormap      | object    | [Color map JSON definition](https://developmentseed.org/titiler/advanced/rendering/#custom-colormaps) that must be applied for a raster band                             |
 | color_formula | string    | [Color formula](https://developmentseed.org/titiler/advanced/rendering/#color-formula) that must be applied for a raster band                                            |
 | resampling    | string    | Resampling algorithm to apply to the referenced assets. See [GDAL resampling algorithm](https://gdal.org/programs/gdalwarp.html#cmdoption-gdalwarp-r) for some examples. |
@@ -114,6 +114,17 @@ by simply specifying the `url` and `assets` query parameters.
 | `color_formula` | `color_formula`                        | Color formula as defined in `color_formula` field of the `asset`                                                                    |
 | `resampling`    | `resampling`                           | Resampling method to use when reprojecting the raster.                                                                              |
 | `bidx`    | `bidx`                           | Dataset band indexes                                                                            |
+
+Titiler delegates colormaps to [rio-tiler](https://github.com/cogeotiff/rio-tiler)'s built-in registry
+(`rio_tiler.colormap.cmap`), which is derived from matplotlib's colormaps but is not an exact match:
+
+- Names are **lowercased** (`colormap_name: "YlGn"` must be sent to titiler as `ylgn`).
+- Reversed colormaps use matplotlib's `_r` suffix convention (e.g. `viridis_r`).
+- The registry also includes some non-matplotlib colormaps (e.g. from [cmocean](https://matplotlib.org/cmocean/)),
+  and does not guarantee coverage of every matplotlib colormap name.
+
+A client sending `colormap_name` to titiler MUST lowercase the value first, and SHOULD verify the resulting
+name is one titiler actually supports (`GET /colorMaps` lists the registered names) before assuming a match.
 
 #### Shortwave Infra-red visual thermal signature example
 
