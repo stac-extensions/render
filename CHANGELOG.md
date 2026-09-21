@@ -9,7 +9,9 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### Fixed
 
 - Document that `expression` accepts `string`, `object`, or `array`, matching the schema ([#8](https://github.com/stac-extensions/render/issues/8))
-- Update broken titiler `colormap` and `color_formula` doc links, and replace dead `api.cogeo.xyz` demo links with placeholders ([#13](https://github.com/stac-extensions/render/issues/13))
+- Update broken titiler `colormap`/`color_formula` doc links and replace the dead `api.cogeo.xyz` demo host.
+  Rework the NDVI example around the still-live Sentinel-2 item, since the Landsat-8 example's source imagery
+  was removed from the public `landsat-pds` bucket ([#13](https://github.com/stac-extensions/render/issues/13))
 
 ## [2.0.0] - 2024-11-19
 

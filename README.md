@@ -117,7 +117,7 @@ by simply specifying the `url` and `assets` query parameters.
 
 #### Shortwave Infra-red visual thermal signature example
 
-From the [Sentinel-2 item](https://github.com/stac-extensions/virtual-assets/blob/main/examples/item-sentinel2.json):
+From the [Sentinel-2 item](examples/item-sentinel2.json):
 
 ```json
 "properties":{
@@ -125,7 +125,7 @@ From the [Sentinel-2 item](https://github.com/stac-extensions/virtual-assets/blo
     "sir":
     {
       "title": "Shortwave Infra-red",
-      "assets": [ "swir22", "nir",  "red" ],
+      "assets": [ "B12", "B08", "B04" ],
       "rescale": [[0,5000],[0,7000],[0,9000]],
       "resampling": "nearest"
     }
@@ -135,15 +135,15 @@ From the [Sentinel-2 item](https://github.com/stac-extensions/virtual-assets/blo
 
 | Query key | value                                               | Example value                                                                                |
 | --------- | --------------------------------------------------- | -------------------------------------------------------------------------------------------- |
-| url       | STAC Item URL                                       | `https://raw.githubusercontent.com/stac-extensions/raster/main/examples/item-sentinel2.json` |
-| assets    | Assets keys defined in the `assets` fields          | `B12,B8A,B04`                                                                                |
+| url       | STAC Item URL                                       | `https://raw.githubusercontent.com/stac-extensions/render/main/examples/item-sentinel2.json` |
+| assets    | Assets keys defined in the `assets` fields          | `B12,B08,B04`                                                                                |
 | rescale   | Delimited Min,Max bounds defined in `rescale` field | `0,5000,0,7000,0,9000`                                                                       |
 
-Example URL. The public demo instance used for this example, `api.cogeo.xyz`, no longer exists.
-Deploy your own [titiler](https://github.com/developmentseed/titiler) instance to reproduce it:
+Example URL, using a self-hosted or public [titiler](https://github.com/developmentseed/titiler) instance
+(the `assets` and `rescale` parameters are repeated, one per band):
 
 ```text
-https://<titiler-endpoint>/stac/crop/14.869,37.682,15.113,37.862/256x256.png?url=https://raw.githubusercontent.com/stac-extensions/raster/main/examples/item-sentinel2.json&assets=B12,B8A,B04&resampling_method=average&rescale=0,5000,0,7000,0,9000&return_mask=true
+https://<titiler-endpoint>/stac/bbox/13.86148243891681,36.95257399124932,15.111074610520053,37.94752813015372/512x512.png?url=https://raw.githubusercontent.com/stac-extensions/render/main/examples/item-sentinel2.json&assets=B12&assets=B08&assets=B04&resampling_method=nearest&rescale=0,5000&rescale=0,7000&rescale=0,9000&return_mask=true
 ```
 
 **Result**: Lava thermal signature of Mount Etna eruption (February 2021)
@@ -152,7 +152,7 @@ https://<titiler-endpoint>/stac/crop/14.869,37.682,15.113,37.862/256x256.png?url
 
 #### Normalized Difference Vegetation Index (NDVI) example
 
-From the [Landsat-8 example](examples/item-landsat8.json) \[[article](https://www.usgs.gov/core-science-systems/nli/landsat/landsat-normalized-difference-vegetation-index?qt-science_support_page_related_con=0#qt-science_support_page_related_con)]:
+From the [Sentinel-2 item](examples/item-sentinel2.json):
 This example uses the [virtual assets](https://github.com/stac-extensions/virtual-assets) to define the NDVI asset first because in this use case,
 the NDVI asset could also be downloaded as a standalone asset.
 
@@ -162,14 +162,14 @@ the NDVI asset could also be downloaded as a standalone asset.
   {
     "roles": [ "virtual", "data", "index" ],
     "type": "image/vnd.stac.geotiff; cloud-optimized=true",
-    "href": "https://raw.githubusercontent.com/stac-extensions/render/main/examples/item-landsat8.json#/assets/ndvi",
+    "href": "https://raw.githubusercontent.com/stac-extensions/render/main/examples/item-sentinel2.json#/assets/ndvi",
     "vrt:hrefs": [
-      { "key": "B04", "href": "https://raw.githubusercontent.com/stac-extensions/render/main/examples/item-landsat8.json#/assets/B04"}, 
-      { "key": "B05", "href": "https://raw.githubusercontent.com/stac-extensions/render/main/examples/item-landsat8.json#/assets/B05"}],
+      { "key": "B04", "href": "https://raw.githubusercontent.com/stac-extensions/render/main/examples/item-sentinel2.json#/assets/B04"}, 
+      { "key": "B08", "href": "https://raw.githubusercontent.com/stac-extensions/render/main/examples/item-sentinel2.json#/assets/B08"}],
     "title": "Normalized Difference Vegetation Index",
     "vrt:algorithm": "band_arithmetic",
     "vrt:algorithm_opts": {
-      "expression": "(B05–B04)/(B05+B04)",
+      "expression": "(B08-B04)/(B08+B04)",
       "rescale": [[-1,1]]
     },
   }
@@ -190,22 +190,21 @@ the NDVI asset could also be downloaded as a standalone asset.
 
 If this case, the parameters to titiler must be extracted from both the virtual asset definition and the render object.
 
-| Query key         | value                                                                            | Example value                                                                               |
-| ----------------- | -------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------- |
-| url               | STAC Item URL                                                                    | `https://raw.githubusercontent.com/stac-extensions/raster/main/examples/item-landsat8.json` |
-| expression        | Band math formula as defined in field `vrt:algorithm`                            | `(B5–B4)/(B5+B4)`                                                                           |
-| rescale           | Delimited Min,Max bounds defined in `rescale` field                              | `-1,1`                                                                                      |
-| colormap          | Color map JSON definition as defined in `colormap_name`                          | `ylgn`                                                                                      |
-| resampling_method | Resampling method to use when reprojecting the raster as defined in `resampling` | `average`                                                                                   |
+| Query key         | value                                                                            | Example value                                                                                |
+| ----------------- | -------------------------------------------------------------------------------- | ---------------------------------------------------------------------------------------------|
+| url               | STAC Item URL                                                                    | `https://raw.githubusercontent.com/stac-extensions/render/main/examples/item-sentinel2.json` |
+| expression        | Band math formula as defined in field `vrt:algorithm`                            | `(B08-B04)/(B08+B04)`                                                                         |
+| rescale           | Delimited Min,Max bounds defined in `rescale` field                              | `-1,1`                                                                                        |
+| colormap_name     | Color map name as defined in `colormap_name`                                     | `ylgn`                                                                                        |
+| resampling_method | Resampling method to use when reprojecting the raster as defined in `resampling` | `average`                                                                                     |
 
-Example URL. The public demo instance used for this example, `api.cogeo.xyz`, no longer exists.
-Deploy your own [titiler](https://github.com/developmentseed/titiler) instance to reproduce it:
+Example URL, using a self-hosted or public [titiler](https://github.com/developmentseed/titiler) instance:
 
 ```text
-https://<titiler-endpoint>/stac/preview.png?url=https://raw.githubusercontent.com/stac-extensions/raster/main/examples/item-landsat8.json&expression=(B5–B4)/(B5+B4)&max_size=512&width=512&resampling_method=average&rescale=-1,1&color_map=ylgn&return_mask=true
+https://<titiler-endpoint>/stac/preview.png?url=https://raw.githubusercontent.com/stac-extensions/render/main/examples/item-sentinel2.json&expression=(B08-B04)/(B08%2BB04)&max_size=512&width=512&resampling_method=average&rescale=-1,1&colormap_name=ylgn&return_mask=true
 ```
 
-Result: Landsat Surface Reflectance Normalized Difference Vegetation Index (NDVI) path 44 row 33.
+Result: Sentinel-2 Normalized Difference Vegetation Index (NDVI), tile 33SVB (Sicily, Italy).
 
 Obviously, the same rendering can be applied to local source assets without using the virtual asset.
 
@@ -215,10 +214,10 @@ Obviously, the same rendering can be applied to local source assets without usin
     "ndvi":
     {
       "title": "Normalized Difference Vegetation Index",
-      "assets": [ "B05", "B04" ],
+      "assets": [ "B08", "B04" ],
       "resampling": "average",
       "colormap_name": "ylgn",
-      "expression": "(B05–B04)/(B05+B04)",
+      "expression": "(B08-B04)/(B08+B04)",
       "rescale": [[-1,1]]
     }
   }
@@ -242,7 +241,7 @@ in order to provide a cross link to the render object.
   "rel": "xyz",
   "type": "image/png",
   "title": "NDVI",
-  "href": "https://<titiler-endpoint>/stac/preview.png?url=https://raw.githubusercontent.com/stac-extensions/raster/main/examples/item-landsat8.json&expression=(B5–B4)/(B5+B4)&max_size=512&width=512&resampling_method=average&rescale=-1,1&color_map=ylgn&return_mask=true",
+  "href": "https://<titiler-endpoint>/stac/preview.png?url=https://raw.githubusercontent.com/stac-extensions/render/main/examples/item-sentinel2.json&expression=(B08-B04)/(B08%2BB04)&max_size=512&width=512&resampling_method=average&rescale=-1,1&colormap_name=ylgn&return_mask=true",
   "render": "ndvi"
 }
 ```
