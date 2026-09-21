@@ -140,60 +140,6 @@
       "type": "image/png",
       "title": "TRC overview post event visualized through a XYZ",
       "render": "trc-overview-post"
-    },
-    {
-      "rel": "self",
-      "href": "https://results.geohazards-tep.eu/6e6f723235313539/collections/burned-area-severity-v3-0-1-rhtxt-5k3swi/items/burned-area-severity",
-      "type": "application/json",
-      "alternate": {
-        "internal": {
-          "href": "http://gep-stac-catalog-6e6f723235313539-stac-fastapi-dbaas-istio-eso/collections/burned-area-severity-v3-0-1-rhtxt-5k3swi/items/burned-area-severity"
-        },
-        "s3": {
-          "href": "s3://argo-wf-gep-6e6f723235313539/6e6f723235313539/burned-area-severity-v3-0-1/rhtxt/5k3swi/burned-area-severity-v3-0-1-rhtxt-5k3swi/burned-area-severity/burned-area-severity.json"
-        }
-      }
-    },
-    {
-      "rel": "collection",
-      "href": "https://results.geohazards-tep.eu/6e6f723235313539/collections/burned-area-severity-v3-0-1-rhtxt-5k3swi",
-      "type": "application/json",
-      "title": "burned-area-severity v3-0-1 processing results (burned-area-severity-v3-0-1-rhtxt)",
-      "alternate": {
-        "internal": {
-          "href": "http://gep-stac-catalog-6e6f723235313539-stac-fastapi-dbaas-istio-eso/collections/burned-area-severity-v3-0-1-rhtxt-5k3swi"
-        },
-        "s3": {
-          "href": "s3://argo-wf-gep-6e6f723235313539/6e6f723235313539/burned-area-severity-v3-0-1/rhtxt/5k3swi/burned-area-severity-v3-0-1-rhtxt-5k3swi/collection.json"
-        }
-      }
-    },
-    {
-      "rel": "parent",
-      "href": "s3://argo-wf-gep-6e6f723235313539/6e6f723235313539/burned-area-severity-v3-0-1/rhtxt/5k3swi/burned-area-severity-v3-0-1-rhtxt-5k3swi/collection.json",
-      "type": "application/json",
-      "title": "burned-area-severity v3-0-1 processing results (burned-area-severity-v3-0-1-rhtxt)",
-      "alternate": {
-        "internal": {
-          "href": "http://gep-stac-catalog-6e6f723235313539-stac-fastapi-dbaas-istio-eso/collections/burned-area-severity-v3-0-1-rhtxt-5k3swi"
-        },
-        "s3": {
-          "href": "s3://argo-wf-gep-6e6f723235313539/6e6f723235313539/burned-area-severity-v3-0-1/rhtxt/5k3swi/burned-area-severity-v3-0-1-rhtxt-5k3swi/collection.json"
-        }
-      }
-    },
-    {
-      "rel": "root",
-      "href": "s3://argo-wf-gep-6e6f723235313539/6e6f723235313539/burned-area-severity-v3-0-1/rhtxt/5k3swi/catalog.json",
-      "type": "application/json",
-      "alternate": {
-        "internal": {
-          "href": "http://gep-stac-catalog-6e6f723235313539-stac-fastapi-dbaas-istio-eso/"
-        },
-        "s3": {
-          "href": "s3://argo-wf-gep-6e6f723235313539/6e6f723235313539/burned-area-severity-v3-0-1/rhtxt/5k3swi/catalog.json"
-        }
-      }
     }
   ],
   "assets": {
