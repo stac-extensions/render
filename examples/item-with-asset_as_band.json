@@ -96,69 +96,6 @@
         "color_formula": "Gamma RGB 1.5 Saturation 1 Sigmoidal RGB 10 0.3",
         "resampling": "nearest"
       }
-    },
-    "title": "Burned Area Severity Analysis from S2A_MSIL2A_20220717T100611_N0510_R022_T33UVS_20240717T130024 and S2A_MSIL2A_20220905T100611_N0510_R022_T33UVS_20240727T103637",
-    "description": "Raster layers showing burned area severity computed from pre/post-event optical imagery. Include NBR, dNBR, and RBR indicators in COG format (EPSG:4326). Only pixels with RBR \u2265 0.3 are included in the overview visualization. A graded yellow-to-red (YlOrRd) color ramp highlights increasing severity in the rendered product.",
-    "proj:epsg": 32633,
-    "provenance": [
-      "S2A_MSIL2A_20220717T100611_N0510_R022_T33UVS_20240717T130024",
-      "S2A_MSIL2A_20220905T100611_N0510_R022_T33UVS_20240727T103637"
-    ],
-    "processing:version": "3.0.1",
-    "auth:schemes": {
-      "signed_url_auth": {
-        "type": "signedUrl",
-        "description": "Provides an authenticated download link for an asset URL in the Location HTTP header",
-        "flows": {
-          "authorizationCode": {
-            "authorizationApi": "https://download.geohazards-tep.eu/6e6f723235313539/\"6e6f723235313539\"/collection/{collection_id}/items/{item_id}/assets/{asset_id}",
-            "method": "GET",
-            "parameters": {
-              "Authorization": {
-                "description": "Authentication credentials",
-                "in": "header",
-                "required": "true",
-                "schema": {
-                  "examples": "Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJ1c2VySWQiOiJhYmNkMTIzIiwiZXhwaXJ5IjoxNjQ2NjM1NjExMzAxfQ.3Thp81rDFrKXr3WrY1MyMnNK8kKoZBX9lg-JwFznR-M",
-                  "type": "string"
-                }
-              },
-              "config_key": {
-                "in": "path",
-                "required": "true",
-                "schema": {
-                  "type": "string",
-                  "examples": "datalake"
-                }
-              },
-              "collection_id": {
-                "in": "path",
-                "required": "true",
-                "schema": {
-                  "type": "string",
-                  "examples": "sentinel-2"
-                }
-              },
-              "item_id": {
-                "in": "path",
-                "required": "true",
-                "schema": {
-                  "type": "string",
-                  "examples": "S2B_MSIL2A_20240910T094029_N0511_R036_T33TWF_20240910T130556"
-                }
-              },
-              "asset_id": {
-                "in": "path",
-                "required": "true",
-                "schema": {
-                  "type": "string",
-                  "examples": "red"
-                }
-              }
-            }
-          }
-        }
-      }
     }
   },
   "links": [
