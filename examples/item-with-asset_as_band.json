@@ -39,6 +39,8 @@
   ],
   "properties": {
     "datetime": "2022-07-17T10:06:11.024000Z",
+    "title": "Burned Area Severity Analysis",
+    "description": "Raster layers showing burned area severity computed from pre/post-event optical imagery. Include NBR, dNBR, and RBR indicators in COG format (EPSG:4326). Only pixels with RBR ≥ 0.3 are included in the overview visualization. A graded yellow-to-red (YlOrRd) color ramp highlights increasing severity in the rendered product.",
     "renders": {
       "rbr-overview": {
         "title": "RBR index overview",
