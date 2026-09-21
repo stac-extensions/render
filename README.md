@@ -193,18 +193,23 @@ If this case, the parameters to titiler must be extracted from both the virtual 
 | Query key         | value                                                                            | Example value                                                                                |
 | ----------------- | -------------------------------------------------------------------------------- | ---------------------------------------------------------------------------------------------|
 | url               | STAC Item URL                                                                    | `https://raw.githubusercontent.com/stac-extensions/render/main/examples/item-sentinel2.json` |
+| assets            | Assets used in the expression, in the order they are referenced                 | `B08,B04`                                                                                      |
 | expression        | Band math formula as defined in field `vrt:algorithm`                            | `(B08-B04)/(B08+B04)`                                                                         |
 | rescale           | Delimited Min,Max bounds defined in `rescale` field                              | `-1,1`                                                                                        |
 | colormap_name     | Color map name as defined in `colormap_name`                                     | `ylgn`                                                                                        |
 | resampling_method | Resampling method to use when reprojecting the raster as defined in `resampling` | `average`                                                                                     |
 
-Example URL, using a self-hosted or public [titiler](https://github.com/developmentseed/titiler) instance:
+Example URL, using a self-hosted or public [titiler](https://github.com/developmentseed/titiler) instance.
+titiler combines multiple `assets` positionally, so the `expression` sent to titiler must reference them as
+`b1`, `b2`, ... in the order given by `assets` (here `b1` = `B08`, `b2` = `B04`), rather than by their asset names:
 
 ```text
-https://<titiler-endpoint>/stac/preview.png?url=https://raw.githubusercontent.com/stac-extensions/render/main/examples/item-sentinel2.json&expression=(B08-B04)/(B08%2BB04)&max_size=512&width=512&resampling_method=average&rescale=-1,1&colormap_name=ylgn&return_mask=true
+https://<titiler-endpoint>/stac/preview.png?url=https://raw.githubusercontent.com/stac-extensions/render/main/examples/item-sentinel2.json&assets=B08&assets=B04&expression=(b1-b2)/(b1%2Bb2)&max_size=512&width=512&resampling_method=average&rescale=-1,1&colormap_name=ylgn&return_mask=true
 ```
 
-Result: Sentinel-2 Normalized Difference Vegetation Index (NDVI), tile 33SVB (Sicily, Italy).
+**Result**: Sentinel-2 Normalized Difference Vegetation Index (NDVI), tile 33SVB (Sicily, Italy).
+
+![ndvi](images/ndvi.png)
 
 Obviously, the same rendering can be applied to local source assets without using the virtual asset.
 
@@ -241,7 +246,7 @@ in order to provide a cross link to the render object.
   "rel": "xyz",
   "type": "image/png",
   "title": "NDVI",
-  "href": "https://<titiler-endpoint>/stac/preview.png?url=https://raw.githubusercontent.com/stac-extensions/render/main/examples/item-sentinel2.json&expression=(B08-B04)/(B08%2BB04)&max_size=512&width=512&resampling_method=average&rescale=-1,1&colormap_name=ylgn&return_mask=true",
+  "href": "https://<titiler-endpoint>/stac/preview.png?url=https://raw.githubusercontent.com/stac-extensions/render/main/examples/item-sentinel2.json&assets=B08&assets=B04&expression=(b1-b2)/(b1%2Bb2)&max_size=512&width=512&resampling_method=average&rescale=-1,1&colormap_name=ylgn&return_mask=true",
   "render": "ndvi"
 }
 ```
