@@ -15,6 +15,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
   ([#18](https://github.com/stac-extensions/render/issues/18))
 - `bidx` index selectors are now documented and validated as 1-based integers (`minimum: 1`), matching the
   GDAL/rio-tiler/titiler convention ([#18](https://github.com/stac-extensions/render/issues/18))
+- **BREAKING** (to be released as a new major version): `colormap_name` MUST now be a standard
+  [matplotlib colormap](https://matplotlib.org/stable/users/explain/colors/colormaps.html) name (e.g. `viridis`,
+  `YlGn`), to give the field a well-known, renderer-agnostic naming convention instead of an arbitrary free-form
+  string ([#14](https://github.com/stac-extensions/render/issues/14))
 
 ### Added
 
