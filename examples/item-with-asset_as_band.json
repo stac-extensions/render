@@ -100,12 +100,6 @@
   },
   "links": [
     {
-      "rel": "processing-execution",
-      "href": "http://processing-gep.terradue.com/6e6f723235313539/jobs/burned-area-severity-v3-0-1-rhtxt",
-      "type": "application/json",
-      "title": "OGC API Processes job id: burned-area-severity-v3-0-1-rhtxt"
-    },
-    {
       "rel": "xyz",
       "href": "https://view.geohazards-tep.eu/6e6f723235313539/collections/burned-area-severity-v3-0-1-rhtxt-5k3swi/items/burned-area-severity/tiles/WebMercatorQuad/{z}/{x}/{y}@1x?&assets=rbr&resampling=average&colormap=%7B%220%22%3A%20%22%23000000%22%2C%20%221%22%3A%20%22%23FFFFB2%22%2C%20%222%22%3A%20%22%23FECC5C%22%2C%20%223%22%3A%20%22%23FD8D3C%22%2C%20%224%22%3A%20%22%23F03B20%22%2C%20%225%22%3A%20%22%23BD0026%22%7D&expression=where%28rbr%3E0.7%2C5%2Cwhere%28rbr%3E0.6%2C4%2Cwhere%28rbr%3E0.5%2C3%2Cwhere%28rbr%3E0.4%2C2%2Cwhere%28rbr%3E0.3%2C1%2C0%29%29%29%29%29",
       "type": "image/png",
