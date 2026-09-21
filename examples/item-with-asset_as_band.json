@@ -31,12 +31,7 @@
       ]
     ]
   },
-  "bbox": [
-    14.1,
-    50.8,
-    14.4,
-    51
-  ],
+  "bbox": [14.1, 50.8, 14.4, 51],
   "properties": {
     "datetime": "2022-07-17T10:06:11.024000Z",
     "title": "Burned Area Severity Analysis",
