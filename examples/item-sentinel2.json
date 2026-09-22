@@ -84,6 +84,14 @@
           ]
         ],
         "resampling": "nearest"
+      },
+      "ndvi": {
+        "title": "Normalized Difference Vegetation Index",
+        "assets": [
+          "ndvi"
+        ],
+        "resampling": "average",
+        "colormap_name": "ylgn"
       }
     }
   },
@@ -95,7 +103,7 @@
       "roles": [
         "metadata"
       ],
-      "href": "metadata.xml"
+      "href": "https://roda.sentinel-hub.com/sentinel-s2-l2a/tiles/33/S/VB/2021/2/21/0/metadata.xml"
     },
     "B01": {
       "title": "Band 1 (coastal)",
@@ -112,7 +120,7 @@
           "full_width_half_max": 0.027
         }
       ],
-      "href": "B01.tif",
+      "href": "https://sentinel-cogs.s3.us-west-2.amazonaws.com/sentinel-s2-l2a-cogs/33/S/VB/2021/2/S2B_33SVB_20210221_0_L2A/B01.tif",
       "proj:shape": [
         1830,
         1830
@@ -160,7 +168,7 @@
           "full_width_half_max": 0.098
         }
       ],
-      "href": "B02.tif",
+      "href": "https://sentinel-cogs.s3.us-west-2.amazonaws.com/sentinel-s2-l2a-cogs/33/S/VB/2021/2/S2B_33SVB_20210221_0_L2A/B02.tif",
       "proj:shape": [
         10980,
         10980
@@ -208,7 +216,7 @@
           "full_width_half_max": 0.045
         }
       ],
-      "href": "B03.tif",
+      "href": "https://sentinel-cogs.s3.us-west-2.amazonaws.com/sentinel-s2-l2a-cogs/33/S/VB/2021/2/S2B_33SVB_20210221_0_L2A/B03.tif",
       "proj:shape": [
         10980,
         10980
@@ -256,7 +264,7 @@
           "full_width_half_max": 0.038
         }
       ],
-      "href": "B04.tif",
+      "href": "https://sentinel-cogs.s3.us-west-2.amazonaws.com/sentinel-s2-l2a-cogs/33/S/VB/2021/2/S2B_33SVB_20210221_0_L2A/B04.tif",
       "proj:shape": [
         10980,
         10980
@@ -303,7 +311,7 @@
           "full_width_half_max": 0.019
         }
       ],
-      "href": "B05.tif",
+      "href": "https://sentinel-cogs.s3.us-west-2.amazonaws.com/sentinel-s2-l2a-cogs/33/S/VB/2021/2/S2B_33SVB_20210221_0_L2A/B05.tif",
       "proj:shape": [
         5490,
         5490
@@ -350,7 +358,7 @@
           "full_width_half_max": 0.018
         }
       ],
-      "href": "B06.tif",
+      "href": "https://sentinel-cogs.s3.us-west-2.amazonaws.com/sentinel-s2-l2a-cogs/33/S/VB/2021/2/S2B_33SVB_20210221_0_L2A/B06.tif",
       "proj:shape": [
         5490,
         5490
@@ -397,7 +405,7 @@
           "full_width_half_max": 0.028
         }
       ],
-      "href": "B07.tif",
+      "href": "https://sentinel-cogs.s3.us-west-2.amazonaws.com/sentinel-s2-l2a-cogs/33/S/VB/2021/2/S2B_33SVB_20210221_0_L2A/B07.tif",
       "proj:shape": [
         5490,
         5490
@@ -429,7 +437,7 @@
           "full_width_half_max": 0.145
         }
       ],
-      "href": "B08.tif",
+      "href": "https://sentinel-cogs.s3.us-west-2.amazonaws.com/sentinel-s2-l2a-cogs/33/S/VB/2021/2/S2B_33SVB_20210221_0_L2A/B08.tif",
       "proj:shape": [
         10980,
         10980
@@ -446,6 +454,36 @@
         1
       ]
     },
+    "ndvi": {
+      "roles": [
+        "virtual",
+        "data",
+        "index"
+      ],
+      "type": "image/tiff; application=geotiff; profile=cloud-optimized",
+      "href": "https://sentinel-cogs.s3.us-west-2.amazonaws.com/sentinel-s2-l2a-cogs/33/S/VB/2021/2/S2B_33SVB_20210221_0_L2A#/assets/ndvi",
+      "vrt:hrefs": [
+        {
+          "key": "B04",
+          "href": "#/assets/B04"
+        },
+        {
+          "key": "B08",
+          "href": "#/assets/B08"
+        }
+      ],
+      "title": "Normalized Difference Vegetation Index",
+      "vrt:algorithm": "band_arithmetic",
+      "vrt:algorithm_opts": {
+        "expression": "(B08-B04)/(B08+B04)",
+        "rescale": [
+          [
+            -1,
+            1
+          ]
+        ]
+      }
+    },
     "B8A": {
       "title": "Band 8A",
       "type": "image/tiff; application=geotiff; profile=cloud-optimized",
@@ -460,7 +498,7 @@
           "full_width_half_max": 0.033
         }
       ],
-      "href": "B8A.tif",
+      "href": "https://sentinel-cogs.s3.us-west-2.amazonaws.com/sentinel-s2-l2a-cogs/33/S/VB/2021/2/S2B_33SVB_20210221_0_L2A/B8A.tif",
       "proj:shape": [
         5490,
         5490
@@ -491,7 +529,7 @@
           "full_width_half_max": 0.026
         }
       ],
-      "href": "B09.tif",
+      "href": "https://sentinel-cogs.s3.us-west-2.amazonaws.com/sentinel-s2-l2a-cogs/33/S/VB/2021/2/S2B_33SVB_20210221_0_L2A/B09.tif",
       "proj:shape": [
         1830,
         1830
@@ -523,7 +561,7 @@
           "full_width_half_max": 0.143
         }
       ],
-      "href": "B11.tif",
+      "href": "https://sentinel-cogs.s3.us-west-2.amazonaws.com/sentinel-s2-l2a-cogs/33/S/VB/2021/2/S2B_33SVB_20210221_0_L2A/B11.tif",
       "proj:shape": [
         5490,
         5490
@@ -555,7 +593,7 @@
           "full_width_half_max": 0.242
         }
       ],
-      "href": "B12.tif",
+      "href": "https://sentinel-cogs.s3.us-west-2.amazonaws.com/sentinel-s2-l2a-cogs/33/S/VB/2021/2/S2B_33SVB_20210221_0_L2A/B12.tif",
       "proj:shape": [
         5490,
         5490
@@ -578,7 +616,7 @@
       "roles": [
         "data"
       ],
-      "href": "AOT.tif",
+      "href": "https://sentinel-cogs.s3.us-west-2.amazonaws.com/sentinel-s2-l2a-cogs/33/S/VB/2021/2/S2B_33SVB_20210221_0_L2A/AOT.tif",
       "proj:shape": [
         1830,
         1830
@@ -601,7 +639,7 @@
       "roles": [
         "data"
       ],
-      "href": "WVP.tif",
+      "href": "https://sentinel-cogs.s3.us-west-2.amazonaws.com/sentinel-s2-l2a-cogs/33/S/VB/2021/2/S2B_33SVB_20210221_0_L2A/WVP.tif",
       "proj:shape": [
         10980,
         10980
@@ -624,7 +662,7 @@
       "roles": [
         "data"
       ],
-      "href": "SCL.tif",
+      "href": "https://sentinel-cogs.s3.us-west-2.amazonaws.com/sentinel-s2-l2a-cogs/33/S/VB/2021/2/S2B_33SVB_20210221_0_L2A/SCL.tif",
       "proj:shape": [
         5490,
         5490
