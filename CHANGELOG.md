@@ -16,6 +16,9 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
   [#21](https://github.com/stac-extensions/render/issues/21))
 - Add a vector data example (`examples/item-vector.json`), showing the extension used on non-raster data with
   a MapLibre expression and stylesheet link
+- Add an OpenLayers integration section, mapping `render` fields to `ol/source/GeoTIFF` + `ol/layer/WebGLTile`
+  for raster data, and to `ol/style/flat` or the `ol-mapbox-style` package for vector data, with worked
+  JavaScript examples
 
 ### Fixed
 

@@ -124,10 +124,11 @@ extension defines its own, following the same `vnd.`/`x-` conventions:
 whole, standalone style document rather than a single formula. This table is not exhaustive: additional
 formats can be added following the same convention as new renderers need to be supported.
 
-## Dynamic tile servers integration
+## Renderer integration
 
-The render objects are designed to be used by dynamic tile servers to produce RGB tiles from a STAC Item.
-They are generic enough to be used by any dynamic tile server. In the following sections, some tilers integration are described.
+The render objects are designed to be used by dynamic tile servers and by client-side rendering libraries to
+produce a visualization from a STAC Item. They are generic enough to be used by any renderer. In the following
+sections, some renderer integrations are described.
 
 ### Titiler
 
@@ -257,6 +258,102 @@ Obviously, the same rendering can be applied to local source assets without usin
     }
   }
 }
+```
+
+### OpenLayers
+
+[OpenLayers](https://openlayers.org/) can render both the raster and vector cases covered by this extension,
+but through different APIs. Unlike TiTiler, OpenLayers renders directly in the browser: there is no tile
+server, so a client maps `render` fields onto OpenLayers constructs itself.
+
+#### Raster: `ol/source/GeoTIFF` and `ol/layer/WebGLTile`
+
+A [`GeoTIFF`](https://openlayers.org/en/latest/apidoc/module-ol_source_GeoTIFF-GeoTIFFSource.html) source reads
+one or more (Cloud Optimized) GeoTIFFs, and a
+[`WebGLTileLayer`](https://openlayers.org/en/latest/apidoc/module-ol_layer_WebGLTile-WebGLTileLayer.html)
+renders it using a `style` expression (from [`ol/expr/expression`](https://openlayers.org/en/latest/apidoc/module-ol_expr_expression.html)).
+
+| OL construct | field | Description |
+| --- | --- | --- |
+| One `sources` entry per asset href | `assets` | Order determines the `['band', N]` index (1-based) referencing that asset |
+| `['interpolate', ['linear'], ['band', N], min, 0, max, 1]`, composed per band with `['array', ...]` | `rescale` | Per-band Min,Max bounds |
+| `['palette', index, colors]` (discrete) or `['interpolate', ...]` color stops (continuous) | `colormap_name` / `colormap` | OpenLayers ships no named palettes; color stops/values must be supplied explicitly |
+| `sources[].nodata` | `nodata` | Nodata value for that source |
+| a numeric `ol/expr/expression` assigned to `style.color`, using the same operators as above | `expression` (when `expression_type` is `application/vnd.openlayers.expression+json`) | See [ol/expr/expression](https://openlayers.org/en/latest/apidoc/module-ol_expr_expression.html) for the full operator list, including arithmetic |
+| — | `resampling` | Not exposed by `ol/source/GeoTIFF`; resampling is handled internally by the WebGL renderer |
+
+Example, rendering the [Shortwave Infra-red example](#shortwave-infra-red-visual-thermal-signature-example)'s
+`sir` render (`assets: ["B12", "B08", "B04"]`, `rescale: [[0,5000],[0,7000],[0,9000]]`):
+
+```js
+import GeoTIFF from 'ol/source/GeoTIFF.js';
+import TileLayer from 'ol/layer/WebGLTile.js';
+
+const source = new GeoTIFF({
+  sources: [
+    { url: 'https://sentinel-cogs.s3.us-west-2.amazonaws.com/sentinel-s2-l2a-cogs/33/S/VB/2021/2/S2B_33SVB_20210221_0_L2A/B12.tif' }, // band 1
+    { url: 'https://sentinel-cogs.s3.us-west-2.amazonaws.com/sentinel-s2-l2a-cogs/33/S/VB/2021/2/S2B_33SVB_20210221_0_L2A/B08.tif' }, // band 2
+    { url: 'https://sentinel-cogs.s3.us-west-2.amazonaws.com/sentinel-s2-l2a-cogs/33/S/VB/2021/2/S2B_33SVB_20210221_0_L2A/B04.tif' }, // band 3
+  ],
+});
+
+const layer = new TileLayer({
+  source,
+  style: {
+    color: [
+      'array',
+      ['interpolate', ['linear'], ['band', 1], 0, 0, 5000, 1],
+      ['interpolate', ['linear'], ['band', 2], 0, 0, 7000, 1],
+      ['interpolate', ['linear'], ['band', 3], 0, 0, 9000, 1],
+      1,
+    ],
+  },
+});
+```
+
+#### Vector: `ol/style/flat` and `ol-mapbox-style`
+
+For vector data (see the [vector example](examples/item-vector.json)), how `expression` is applied depends on
+`expression_type`:
+
+| OL construct | field | Description |
+| --- | --- | --- |
+| A [flat style](https://openlayers.org/en/latest/apidoc/module-ol_style_flat.html) property (e.g. `stroke-color`, `fill-color`) set directly to the expression | `expression` when `expression_type` is `application/vnd.openlayers.expression+json` | OpenLayers' native expression dialect can be used as-is |
+| [`stylefunction(olLayer, glStyle, sourceOrLayers)`](https://github.com/openlayers/ol-mapbox-style) from the separate `ol-mapbox-style` package | `expression` when `expression_type` is `application/vnd.maplibre.expression+json`, or a [stylesheet link](#stylesheet-links) with `type: application/vnd.mapbox.style+json` | OpenLayers does not natively understand MapLibre/Mapbox style expressions; `ol-mapbox-style` bridges them onto an existing OL layer |
+
+Native OpenLayers expression (the [vector example](examples/item-vector.json)'s `roads-by-class` render, once
+translated to `application/vnd.openlayers.expression+json`):
+
+```js
+import VectorTileLayer from 'ol/layer/VectorTile.js';
+import VectorTileSource from 'ol/source/VectorTile.js';
+
+const layer = new VectorTileLayer({
+  source: new VectorTileSource({ url: 'https://example.com/data/roads/{z}/{x}/{y}.pbf' }),
+  style: {
+    'stroke-color': [
+      'match', ['get', 'class'],
+      'motorway', '#e15c5c',
+      'primary', '#f2b46d',
+      '#cccccc',
+    ],
+    'stroke-width': 2,
+  },
+});
+```
+
+Applying an actual MapLibre/Mapbox style document, e.g. from a [stylesheet link](#stylesheet-links) with
+`type: application/vnd.mapbox.style+json`, to an existing OL layer:
+
+```js
+import { stylefunction } from 'ol-mapbox-style';
+import VectorTileLayer from 'ol/layer/VectorTile.js';
+
+const layer = new VectorTileLayer({ /* source config */ });
+
+fetch('https://example.com/styles/roads.json')
+  .then((response) => response.json())
+  .then((glStyle) => stylefunction(layer, glStyle, 'roads'));
 ```
 
 ## Links
