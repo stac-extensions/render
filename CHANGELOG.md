@@ -10,7 +10,11 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 - Add `bands`, a name-based alternative to `bidx` that references a `name` from the asset's `eo:bands`,
   `raster:bands`, or the STAC 1.1+ common `bands` construct, resolving the ambiguity over whether a band
-  reference must correspond to STAC band metadata ([#18](https://github.com/stac-extensions/render/issues/18))
+  reference must correspond to STAC band metadata. Structured as one array per position in `assets`, so a
+  band selection can be tied unambiguously to a specific asset when there is more than one
+  ([#18](https://github.com/stac-extensions/render/issues/18))
+- Add a Planet example (`examples/item-planet.json`), demonstrating `bands` on a genuine single multi-band
+  asset (PlanetScope's 8-band analytic product), using STAC 1.1.0's common `bands` construct
 
 ### Deprecated
 

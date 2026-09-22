@@ -1,0 +1,152 @@
+{
+  "type": "Feature",
+  "stac_version": "1.1.0",
+  "stac_extensions": [
+    "https://stac-extensions.github.io/render/v2.0.0/schema.json"
+  ],
+  "id": "planet-psscene-8b-example",
+  "bbox": [
+    4.32,
+    50.82,
+    4.42,
+    50.9
+  ],
+  "geometry": {
+    "type": "Polygon",
+    "coordinates": [
+      [
+        [
+          4.32,
+          50.82
+        ],
+        [
+          4.32,
+          50.9
+        ],
+        [
+          4.42,
+          50.9
+        ],
+        [
+          4.42,
+          50.82
+        ],
+        [
+          4.32,
+          50.82
+        ]
+      ]
+    ]
+  },
+  "properties": {
+    "datetime": "2024-06-01T10:30:00Z",
+    "platform": "PlanetScope",
+    "instruments": [
+      "PSB.SD"
+    ],
+    "gsd": 3,
+    "renders": {
+      "true-color": {
+        "title": "True color composite",
+        "assets": [
+          "analytic"
+        ],
+        "bands": [
+          [
+            "red",
+            "green",
+            "blue"
+          ]
+        ],
+        "rescale": [
+          [
+            0,
+            10000
+          ],
+          [
+            0,
+            10000
+          ],
+          [
+            0,
+            10000
+          ]
+        ],
+        "resampling": "bilinear"
+      },
+      "false-color": {
+        "title": "False color (NIR-Red-Green) composite",
+        "assets": [
+          "analytic"
+        ],
+        "bands": [
+          [
+            "nir",
+            "red",
+            "green"
+          ]
+        ],
+        "rescale": [
+          [
+            0,
+            10000
+          ],
+          [
+            0,
+            10000
+          ],
+          [
+            0,
+            10000
+          ]
+        ],
+        "resampling": "bilinear"
+      }
+    }
+  },
+  "links": [],
+  "assets": {
+    "analytic": {
+      "title": "8-band analytic surface reflectance",
+      "type": "image/tiff; application=geotiff; profile=cloud-optimized",
+      "roles": [
+        "data"
+      ],
+      "href": "https://example.com/data/planet/psscene_8b_analytic.tif",
+      "bands": [
+        {
+          "name": "coastal",
+          "description": "Coastal Blue, 431-452nm"
+        },
+        {
+          "name": "blue",
+          "description": "Blue, 465-515nm"
+        },
+        {
+          "name": "green05",
+          "description": "Green I, 513-549nm"
+        },
+        {
+          "name": "green",
+          "description": "Green, 547-583nm"
+        },
+        {
+          "name": "yellow",
+          "description": "Yellow, 600-620nm"
+        },
+        {
+          "name": "red",
+          "description": "Red, 650-680nm"
+        },
+        {
+          "name": "rededge",
+          "description": "Red Edge, 697-713nm"
+        },
+        {
+          "name": "nir",
+          "description": "Near-Infrared, 845-885nm"
+        }
+      ]
+    }
+  }
+}

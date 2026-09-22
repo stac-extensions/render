@@ -14,6 +14,7 @@ Rendering extension aims at providings consumers with the possible rendering of 
 - Examples:
   - [Landsat-8 example](examples/item-landsat8.json): Shows the basic usage of the extension in a landsat-8 STAC Item
   - [Sentinel-2 example](examples/item-sentinel2.json): Shows the basic usage of the extension in a Sentinel-2 STAC Item
+  - [Planet example](examples/item-planet.json): Shows `bands` selecting named bands from a single multi-band asset
   - [Collection example](examples/collection.json): Shows the basic usage of the extension in a collection
 - [JSON Schema](json-schema/schema.json)
 - [Changelog](./CHANGELOG.md)
@@ -47,7 +48,7 @@ The fields in the table below can be used in these parts of STAC documents:
 | expression    | string, object, array | Band arithmetic formula to apply to the referenced assets. The format is defined by the rendering application, e.g. a [TiTiler](https://developmentseed.org/titiler/) band math string or a [MapLibre](https://maplibre.org/maplibre-style-spec/expressions/) style expression array. |
 | minmax_zoom   | \[int]    | Zoom levels range applicable for the visualization                                                                                                                       |
 | bidx          | \[int]    | **Deprecated**, use `bands` instead. 1-based band indexes into the referenced assets (matching the GDAL/rio-tiler/titiler convention), with no required correspondence to any band metadata. See [Band references](#band-references). |
-| bands         | \[string] | Band names to use for the rendering, one per referenced asset's band. Each name MUST match the `name` of a Band Object declared on the corresponding asset (via `eo:bands`, `raster:bands`, or the STAC [common `bands`](https://github.com/radiantearth/stac-spec/blob/v1.1.0/commons/common-metadata.md#bands) construct). Preferred over `bidx`. See [Band references](#band-references). |
+| bands         | \[\[string]] | Band names to select from each referenced asset. One entry per position in `assets` (an asset that needs no sub-selection uses an empty array `[]`); each name MUST match the `name` of a Band Object declared on that asset (via `eo:bands`, `raster:bands`, or the STAC [common `bands`](https://github.com/radiantearth/stac-spec/blob/v1.1.0/commons/common-metadata.md#bands) construct). Preferred over `bidx`. See [Band references](#band-references). |
 
 The `render` object is open ended, so additional fields can be provided according to the needs of the rendering application.
 
@@ -73,26 +74,51 @@ the second the green band and the third the blue band.
 
 ## Band references
 
-When one of the referenced `assets` is itself a multi-band raster, `bidx` or `bands` selects which band(s) of
-that asset to use.
+When one or more of the referenced `assets` is itself a multi-band raster, `bidx` or `bands` selects which
+band(s) of each asset to use.
 
-`bidx` is **deprecated** because it indexes directly into the underlying raster file
-and has no required correspondence to any STAC band metadata — a `bidx` value is only meaningful if you already
-know how the file's bands are physically ordered.
+`bidx` is **deprecated**. Beyond indexing directly into the underlying raster file with no required
+correspondence to any STAC band metadata, it never specified how to relate its values back to more than one
+asset at a time, which is exactly the ambiguity `bands` is designed to resolve.
 
-`bands` replaces it with a name-based reference: each entry MUST match the `name` of a
+`bands` is an array with **one entry per position in `assets`** (`bands.length` MUST equal `assets.length`),
+where each entry is itself an array of the band name(s) selected from that asset, in output order. An asset
+that needs no sub-selection (e.g. it is already single-band, or all its bands should be used in their existing
+order) uses an empty array `[]`. Each band name MUST match the `name` of a
 [Band Object](https://github.com/radiantearth/stac-spec/blob/v1.1.0/commons/common-metadata.md#bands) declared
-on the corresponding asset, whether via that asset's `eo:bands`, `raster:bands`, or the STAC 1.1+ common
-`bands` construct (all three use the same `name` property). This ties the reference to metadata already present
-in the Item or Asset, rather than to an implementation's internal band ordering.
+on that asset, whether via its `eo:bands`, `raster:bands`, or the STAC 1.1+ common `bands` construct (all three
+use the same `name` property). This ties the reference to metadata already present in the Item or Asset, rather
+than to an implementation's internal band ordering. Note that JSON Schema cannot enforce the
+`bands.length == assets.length` rule itself; it is a MUST, not a validated constraint.
 
 ```json
-"assets": [ "COG" ],
-"bands": [ "red", "nir" ]
+"assets": [ "B04", "stacked" ],
+"bands": [ [], [ "red", "nir" ] ]
 ```
 
-A renderer that only accepts a numeric band index (e.g. titiler's `bidx`) resolves a `bands` name to one by
-looking up its position in the referenced asset's band metadata.
+Here, `B04` is used as-is (empty array: no sub-selection needed), while two bands, `red` and `nir`, are
+selected from the multi-band `stacked` asset, in that order.
+
+See the [Planet example](examples/item-planet.json) for a realistic case: PlanetScope's 8-band analytic
+product is delivered as a single multi-band GeoTIFF asset (unlike Sentinel-2/Landsat-8, which split each band
+into its own asset), so `bands` is the only way to select, say, a true-color RGB composite from it:
+
+```json
+"assets": [ "analytic" ],
+"bands": [ [ "red", "green", "blue" ] ]
+```
+
+A renderer that only accepts a numeric, per-asset band index (e.g. titiler's inline
+`assets=<name>|bidx=<i1>,<i2>` syntax) resolves each `bands` name to a 1-based index by looking up its
+position in that asset's own band metadata:
+
+```text
+assets=B04&assets=stacked|bidx=3,5
+```
+
+(assuming `red` and `nir` are, respectively, the 3rd and 5th band declared on the `stacked` asset). Titiler
+also accepts an inline `|bands=<name1>,<name2>` option; consult the target renderer's documentation for
+whether it can resolve band names directly, or whether a client must perform this lookup itself.
 
 ## Rescaling
 
@@ -138,7 +164,7 @@ by simply specifying the `url` and `assets` query parameters.
 | `colormap`      | `colormap`                             | Color map JSON definition as defined in `colormap` object of the `asset` (overrides `colormap_name` if present )                    |
 | `color_formula` | `color_formula`                        | Color formula as defined in `color_formula` field of the `asset`                                                                    |
 | `resampling`    | `resampling`                           | Resampling method to use when reprojecting the raster.                                                                              |
-| `bidx`    | `bidx` (deprecated), or `bands` resolved to a 1-based index via the asset's band metadata | Dataset band indexes. See [Band references](#band-references). |
+| `assets=<name>\|bidx=<i1>,<i2>` (or the legacy `bidx` param) | `bidx` (deprecated), or `bands` resolved to a 1-based index via the asset's band metadata | Per-asset dataset band indexes. See [Band references](#band-references). |
 
 #### Shortwave Infra-red visual thermal signature example
 
