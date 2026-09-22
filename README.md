@@ -46,7 +46,7 @@ The fields in the table below can be used in these parts of STAC documents:
 | resampling    | string    | Resampling algorithm to apply to the referenced assets. See [GDAL resampling algorithm](https://gdal.org/programs/gdalwarp.html#cmdoption-gdalwarp-r) for some examples. |
 | expression    | string, object, array | Band arithmetic formula to apply to the referenced assets. The format is defined by the rendering application, e.g. a [TiTiler](https://developmentseed.org/titiler/) band math string or a [MapLibre](https://maplibre.org/maplibre-style-spec/expressions/) style expression array. |
 | minmax_zoom   | \[int]    | **Deprecated**, use `minmax_resolution` instead. Zoom levels range applicable for the visualization. Ambiguous across mapping libraries, see [Resolution vs. zoom levels](#resolution-vs-zoom-levels). |
-| minmax_resolution | \[float] | Min/max ground sample distance (resolution), in the same unit as [`gsd`](https://github.com/radiantearth/stac-spec/blob/master/item-spec/common-metadata.md#instrument), applicable for the visualization. Preferred over `minmax_zoom` since it is independent of any tiling scheme or library convention. |
+| minmax_resolution | \[number] | Min/max ground sample distance (resolution), in the same unit as [`gsd`](https://github.com/radiantearth/stac-spec/blob/master/item-spec/common-metadata.md#instrument), applicable for the visualization. Preferred over `minmax_zoom` since it is independent of any tiling scheme or library convention. |
 
 The `render` object is open ended, so additional fields can be provided according to the needs of the rendering application.
 
