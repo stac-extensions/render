@@ -40,7 +40,7 @@ The fields in the table below can be used in these parts of STAC documents:
 | title         | string    | Optional title of the rendering                                                                                                                                          |
 | rescale       | \[float]  | 2 dimensions array of delimited Min,Max range per band. If not provided, the data will not be rescaled.                                                                  |
 | nodata        | float, string     | Nodata value to use for the referenced assets.                                                                                                                           |
-| colormap_name | string    | Name of a standard [matplotlib colormap](https://matplotlib.org/stable/users/explain/colors/colormaps.html) (e.g. `viridis`, `YlGn`) to apply to a raster band. |
+| colormap_name | string    | Name of a standard [matplotlib colormap](https://matplotlib.org/stable/users/explain/colors/colormaps.html) (e.g. `viridis`, `YlGn`) to apply to a raster band. Third party colormaps are not supported, use `colormap` instead. |
 | colormap      | object    | [Color map JSON definition](https://developmentseed.org/titiler/advanced/rendering/#custom-colormaps) that must be applied for a raster band                             |
 | color_formula | string    | [Color formula](https://developmentseed.org/titiler/advanced/rendering/#color-formula) that must be applied for a raster band                                            |
 | resampling    | string    | Resampling algorithm to apply to the referenced assets. See [GDAL resampling algorithm](https://gdal.org/programs/gdalwarp.html#cmdoption-gdalwarp-r) for some examples. |
