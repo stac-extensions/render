@@ -460,7 +460,7 @@
         "data",
         "index"
       ],
-      "type": "image/vnd.stac.geotiff; cloud-optimized=true",
+      "type": "image/tiff; application=geotiff; profile=cloud-optimized",
       "href": "https://sentinel-cogs.s3.us-west-2.amazonaws.com/sentinel-s2-l2a-cogs/33/S/VB/2021/2/S2B_33SVB_20210221_0_L2A#/assets/ndvi",
       "vrt:hrefs": [
         {
