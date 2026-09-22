@@ -273,8 +273,11 @@
         },
         "minmax_resolution": {
           "type": "array",
+          "minItems": 2,
+          "maxItems": 2,
           "items": {
-            "type": "number"
+            "type": "number",
+            "exclusiveMinimum": 0
           }
         },
         "bidx": {
