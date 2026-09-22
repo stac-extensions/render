@@ -46,6 +46,8 @@ The fields in the table below can be used in these parts of STAC documents:
 | resampling    | string    | Resampling algorithm to apply to the referenced assets. See [GDAL resampling algorithm](https://gdal.org/programs/gdalwarp.html#cmdoption-gdalwarp-r) for some examples. |
 | expression    | string, object, array | Band arithmetic formula to apply to the referenced assets. The format is defined by the rendering application, e.g. a [TiTiler](https://developmentseed.org/titiler/) band math string or a [MapLibre](https://maplibre.org/maplibre-style-spec/expressions/) style expression array. |
 | minmax_zoom   | \[int]    | Zoom levels range applicable for the visualization                                                                                                                       |
+| bidx          | \[int]    | **Deprecated**, use `bands` instead. 1-based band indexes into the referenced assets (matching the GDAL/rio-tiler/titiler convention), with no required correspondence to any band metadata. See [Band references](#band-references). |
+| bands         | \[string] | Band names to use for the rendering, one per referenced asset's band. Each name MUST match the `name` of a Band Object declared on the corresponding asset (via `eo:bands`, `raster:bands`, or the STAC [common `bands`](https://github.com/radiantearth/stac-spec/blob/v1.1.0/commons/common-metadata.md#bands) construct). Preferred over `bidx`. See [Band references](#band-references). |
 
 The `render` object is open ended, so additional fields can be provided according to the needs of the rendering application.
 
@@ -68,6 +70,29 @@ the second the green band and the third the blue band.
 ```json
 "assets": [ "red", "green", "blue" ]
 ```
+
+## Band references
+
+When one of the referenced `assets` is itself a multi-band raster, `bidx` or `bands` selects which band(s) of
+that asset to use.
+
+`bidx` is **deprecated** because it indexes directly into the underlying raster file
+and has no required correspondence to any STAC band metadata — a `bidx` value is only meaningful if you already
+know how the file's bands are physically ordered.
+
+`bands` replaces it with a name-based reference: each entry MUST match the `name` of a
+[Band Object](https://github.com/radiantearth/stac-spec/blob/v1.1.0/commons/common-metadata.md#bands) declared
+on the corresponding asset, whether via that asset's `eo:bands`, `raster:bands`, or the STAC 1.1+ common
+`bands` construct (all three use the same `name` property). This ties the reference to metadata already present
+in the Item or Asset, rather than to an implementation's internal band ordering.
+
+```json
+"assets": [ "COG" ],
+"bands": [ "red", "nir" ]
+```
+
+A renderer that only accepts a numeric band index (e.g. titiler's `bidx`) resolves a `bands` name to one by
+looking up its position in the referenced asset's band metadata.
 
 ## Rescaling
 
@@ -113,7 +138,7 @@ by simply specifying the `url` and `assets` query parameters.
 | `colormap`      | `colormap`                             | Color map JSON definition as defined in `colormap` object of the `asset` (overrides `colormap_name` if present )                    |
 | `color_formula` | `color_formula`                        | Color formula as defined in `color_formula` field of the `asset`                                                                    |
 | `resampling`    | `resampling`                           | Resampling method to use when reprojecting the raster.                                                                              |
-| `bidx`    | `bidx`                           | Dataset band indexes                                                                            |
+| `bidx`    | `bidx` (deprecated), or `bands` resolved to a 1-based index via the asset's band metadata | Dataset band indexes. See [Band references](#band-references). |
 
 #### Shortwave Infra-red visual thermal signature example
 

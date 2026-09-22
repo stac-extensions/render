@@ -210,6 +210,12 @@
           "required": [
             "bidx"
           ]
+        },
+        {
+          "type": "object",
+          "required": [
+            "bands"
+          ]
         }
       ]
     },
@@ -269,6 +275,12 @@
           "type": "array",
           "items": {
             "type": "number"
+          }
+        },
+        "bands": {
+          "type": "array",
+          "items": {
+            "type": "string"
           }
         }
       },

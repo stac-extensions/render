@@ -6,6 +6,18 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+### Added
+
+- Add `bands`, a name-based alternative to `bidx` that references a `name` from the asset's `eo:bands`,
+  `raster:bands`, or the STAC 1.1+ common `bands` construct, resolving the ambiguity over whether a band
+  reference must correspond to STAC band metadata ([#18](https://github.com/stac-extensions/render/issues/18))
+
+### Deprecated
+
+- `bidx` is deprecated in favor of `bands`, and is now documented as a 1-based index (matching the
+  GDAL/rio-tiler/titiler convention) with no required correspondence to any STAC band metadata
+  ([#18](https://github.com/stac-extensions/render/issues/18))
+
 ### Fixed
 
 - Document that `expression` accepts `string`, `object`, or `array`, matching the schema ([#8](https://github.com/stac-extensions/render/issues/8))
