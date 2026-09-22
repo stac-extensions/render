@@ -46,6 +46,7 @@ The fields in the table below can be used in these parts of STAC documents:
 | resampling    | string    | Resampling algorithm to apply to the referenced assets. See [GDAL resampling algorithm](https://gdal.org/programs/gdalwarp.html#cmdoption-gdalwarp-r) for some examples. |
 | expression    | string, object, array | Band arithmetic formula to apply to the referenced assets. The format is defined by the rendering application, e.g. a [TiTiler](https://developmentseed.org/titiler/) band math string or a [MapLibre](https://maplibre.org/maplibre-style-spec/expressions/) style expression array. |
 | minmax_zoom   | \[int]    | Zoom levels range applicable for the visualization                                                                                                                       |
+| asset_as_band | boolean   | Treat assets in `expression` as single bands. Required when expression uses multiple assets           |
 
 The `render` object is open ended, so additional fields can be provided according to the needs of the rendering application.
 
@@ -114,6 +115,7 @@ by simply specifying the `url` and `assets` query parameters.
 | `color_formula` | `color_formula`                        | Color formula as defined in `color_formula` field of the `asset`                                                                    |
 | `resampling`    | `resampling`                           | Resampling method to use when reprojecting the raster.                                                                              |
 | `bidx`    | `bidx`                           | Dataset band indexes                                                                            |
+| `asset_as_band` | `asset_as_band`                        | Required when expression uses multiple single-band assets              |
 
 #### Shortwave Infra-red visual thermal signature example
 

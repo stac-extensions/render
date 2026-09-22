@@ -1,0 +1,453 @@
+{
+  "type": "Feature",
+  "stac_version": "1.1.0",
+  "stac_extensions": [
+    "https://stac-extensions.github.io/render/v2.0.0/schema.json"
+  ],
+  "id": "burned-area-severity",
+  "geometry": {
+    "type": "Polygon",
+    "coordinates": [
+      [
+        [
+          14.4,
+          51
+        ],
+        [
+          14.4,
+          50.8
+        ],
+        [
+          14.1,
+          50.8
+        ],
+        [
+          14.1,
+          51
+        ],
+        [
+          14.4,
+          51
+        ]
+      ]
+    ]
+  },
+  "bbox": [
+    14.1,
+    50.8,
+    14.4,
+    51
+  ],
+  "properties": {
+    "datetime": "2022-07-17T10:06:11.024000Z",
+    "title": "Burned Area Severity Analysis",
+    "description": "Raster layers showing burned area severity computed from pre/post-event optical imagery. Include NBR, dNBR, and RBR indicators in COG format (EPSG:4326). Only pixels with RBR ≥ 0.3 are included in the overview visualization. A graded yellow-to-red (YlOrRd) color ramp highlights increasing severity in the rendered product.",
+    "renders": {
+      "rbr-overview": {
+        "title": "RBR index overview",
+        "assets": [
+          "rbr"
+        ],
+        "resampling": "average",
+        "colormap": {
+          "0": "#000000",
+          "1": "#FFFFB2",
+          "2": "#FECC5C",
+          "3": "#FD8D3C",
+          "4": "#F03B20",
+          "5": "#BD0026"
+        },
+        "expression": "where(rbr>0.7,5,where(rbr>0.6,4,where(rbr>0.5,3,where(rbr>0.4,2,where(rbr>0.3,1,0)))))",
+        "asset_as_band": true
+      },
+      "dnbr-overview": {
+        "title": "DNBR index overview",
+        "assets": [
+          "dnbr"
+        ],
+        "resampling": "average",
+        "colormap": {
+          "0": "#000000",
+          "1": "#FED66D",
+          "2": "#F86C31",
+          "3": "#DC0000",
+          "4": "#780000"
+        },
+        "expression": "where(dnbr>0.659,4,where(dnbr>0.439,3,where(dnbr>0.269,2,where(dnbr>0.1,1,0))))",
+        "asset_as_band": true
+      },
+      "civ-overview-pre": {
+        "title": "CIV overview pre event",
+        "assets": [
+          "nir_pre",
+          "red_pre",
+          "green_pre"
+        ],
+        "color_formula": "Gamma RGB 1.5 Saturation 1 Sigmoidal RGB 10 0.3",
+        "resampling": "nearest"
+      },
+      "civ-overview-post": {
+        "title": "CIV overview post event",
+        "assets": [
+          "nir_post",
+          "red_post",
+          "green_post"
+        ],
+        "color_formula": "Gamma RGB 1.5 Saturation 1 Sigmoidal RGB 10 0.3",
+        "resampling": "nearest"
+      },
+      "trc-overview-pre": {
+        "title": "TRC overview pre event",
+        "assets": [
+          "red_pre",
+          "green_pre",
+          "blue_pre"
+        ],
+        "color_formula": "Gamma RGB 1.5 Saturation 1 Sigmoidal RGB 10 0.3",
+        "resampling": "nearest"
+      },
+      "trc-overview-post": {
+        "title": "TRC overview post event",
+        "assets": [
+          "red_post",
+          "green_post",
+          "blue_post"
+        ],
+        "color_formula": "Gamma RGB 1.5 Saturation 1 Sigmoidal RGB 10 0.3",
+        "resampling": "nearest"
+      }
+    }
+  },
+  "links": [
+    {
+      "rel": "xyz",
+      "href": "https://view.geohazards-tep.eu/6e6f723235313539/collections/burned-area-severity-v3-0-1-rhtxt-5k3swi/items/burned-area-severity/tiles/WebMercatorQuad/{z}/{x}/{y}@1x?&assets=rbr&resampling=average&colormap=%7B%220%22%3A%20%22%23000000%22%2C%20%221%22%3A%20%22%23FFFFB2%22%2C%20%222%22%3A%20%22%23FECC5C%22%2C%20%223%22%3A%20%22%23FD8D3C%22%2C%20%224%22%3A%20%22%23F03B20%22%2C%20%225%22%3A%20%22%23BD0026%22%7D&expression=where%28rbr%3E0.7%2C5%2Cwhere%28rbr%3E0.6%2C4%2Cwhere%28rbr%3E0.5%2C3%2Cwhere%28rbr%3E0.4%2C2%2Cwhere%28rbr%3E0.3%2C1%2C0%29%29%29%29%29",
+      "type": "image/png",
+      "title": "RBR index overview visualized through a XYZ",
+      "render": "rbr-overview"
+    },
+    {
+      "rel": "xyz",
+      "href": "https://view.geohazards-tep.eu/6e6f723235313539/collections/burned-area-severity-v3-0-1-rhtxt-5k3swi/items/burned-area-severity/tiles/WebMercatorQuad/{z}/{x}/{y}@1x?&assets=dnbr&resampling=average&colormap=%7B%220%22%3A%20%22%23000000%22%2C%20%221%22%3A%20%22%23FED66D%22%2C%20%222%22%3A%20%22%23F86C31%22%2C%20%223%22%3A%20%22%23DC0000%22%2C%20%224%22%3A%20%22%23780000%22%7D&expression=where%28dnbr%3E0.659%2C4%2Cwhere%28dnbr%3E0.439%2C3%2Cwhere%28dnbr%3E0.269%2C2%2Cwhere%28dnbr%3E0.1%2C1%2C0%29%29%29%29",
+      "type": "image/png",
+      "title": "DNBR index overview visualized through a XYZ",
+      "render": "dnbr-overview"
+    },
+    {
+      "rel": "xyz",
+      "href": "https://view.geohazards-tep.eu/6e6f723235313539/collections/burned-area-severity-v3-0-1-rhtxt-5k3swi/items/burned-area-severity/tiles/WebMercatorQuad/{z}/{x}/{y}@1x?&assets=nir_pre&assets=red_pre&assets=green_pre&color_formula=Gamma%20RGB%201.5%20Saturation%201%20Sigmoidal%20RGB%2010%200.3&resampling=nearest",
+      "type": "image/png",
+      "title": "CIV overview pre event visualized through a XYZ",
+      "render": "civ-overview-pre"
+    },
+    {
+      "rel": "xyz",
+      "href": "https://view.geohazards-tep.eu/6e6f723235313539/collections/burned-area-severity-v3-0-1-rhtxt-5k3swi/items/burned-area-severity/tiles/WebMercatorQuad/{z}/{x}/{y}@1x?&assets=nir_post&assets=red_post&assets=green_post&color_formula=Gamma%20RGB%201.5%20Saturation%201%20Sigmoidal%20RGB%2010%200.3&resampling=nearest",
+      "type": "image/png",
+      "title": "CIV overview post event visualized through a XYZ",
+      "render": "civ-overview-post"
+    },
+    {
+      "rel": "xyz",
+      "href": "https://view.geohazards-tep.eu/6e6f723235313539/collections/burned-area-severity-v3-0-1-rhtxt-5k3swi/items/burned-area-severity/tiles/WebMercatorQuad/{z}/{x}/{y}@1x?&assets=red_pre&assets=green_pre&assets=blue_pre&color_formula=Gamma%20RGB%201.5%20Saturation%201%20Sigmoidal%20RGB%2010%200.3&resampling=nearest",
+      "type": "image/png",
+      "title": "TRC overview pre event visualized through a XYZ",
+      "render": "trc-overview-pre"
+    },
+    {
+      "rel": "xyz",
+      "href": "https://view.geohazards-tep.eu/6e6f723235313539/collections/burned-area-severity-v3-0-1-rhtxt-5k3swi/items/burned-area-severity/tiles/WebMercatorQuad/{z}/{x}/{y}@1x?&assets=red_post&assets=green_post&assets=blue_post&color_formula=Gamma%20RGB%201.5%20Saturation%201%20Sigmoidal%20RGB%2010%200.3&resampling=nearest",
+      "type": "image/png",
+      "title": "TRC overview post event visualized through a XYZ",
+      "render": "trc-overview-post"
+    }
+  ],
+  "assets": {
+    "dnbr": {
+      "href": "s3://argo-wf-gep-6e6f723235313539/6e6f723235313539/burned-area-severity-v3-0-1/rhtxt/5k3swi/burned-area-severity-v3-0-1-rhtxt-5k3swi/burned-area-severity/dnbr.tif",
+      "type": "image/tiff; application=geotiff; profile=cloud-optimized",
+      "description": "delta Normalized Burn Ratio (NBRpre - NBRpost)",
+      "roles": [
+        "data",
+        "visual"
+      ]
+    },
+    "rbr": {
+      "href": "s3://argo-wf-gep-6e6f723235313539/6e6f723235313539/burned-area-severity-v3-0-1/rhtxt/5k3swi/burned-area-severity-v3-0-1-rhtxt-5k3swi/burned-area-severity/rbr.tif",
+      "type": "image/tiff; application=geotiff; profile=cloud-optimized",
+      "description": "Relativized Burn Ratio (dNBR/(NBRpre+1.001))",
+      "s_expression": "(rbr 1.nir 1.swir22 2.nir 2.swir22)",
+      "classification:classes": [
+        {
+          "name": "Low Severity",
+          "title": "Low Severity",
+          "value": 1,
+          "color_hint": "#FFFFB2",
+          "description": "RBR 0.3 - 0.4"
+        },
+        {
+          "name": "Moderate-low severity",
+          "title": "Moderate-low severity",
+          "value": 2,
+          "color_hint": "#FECC5C",
+          "description": "RBR 0.4 - 0.5"
+        },
+        {
+          "name": "Moderate severity",
+          "title": "Moderate severity",
+          "value": 3,
+          "color_hint": "#FD8D3C",
+          "description": "RBR 0.5 - 0.6"
+        },
+        {
+          "name": "Moderate-high severity",
+          "title": "Moderate-high severity",
+          "value": 4,
+          "color_hint": "#F03B20",
+          "description": "RBR 0.6 - 0.7"
+        },
+        {
+          "name": "High severity",
+          "title": "High severity",
+          "value": 5,
+          "color_hint": "#BD0026",
+          "description": "RBR > 0.7"
+        }
+      ],
+      "file:size": 23183875,
+      "auth:refs": [
+        "signed_url_auth"
+      ],
+      "alternate": {
+        "https": {
+          "href": "https://download.geohazards-tep.eu/6e6f723235313539/collections/burned-area-severity-v3-0-1-rhtxt-5k3swi/items/burned-area-severity/assets/rbr",
+          "alternate:name": "HTTPS"
+        }
+      },
+      "roles": [
+        "data",
+        "visual"
+      ]
+    },
+    "red-channel-pre": {
+      "href": "s3://argo-wf-gep-6e6f723235313539/6e6f723235313539/burned-area-severity-v3-0-1/rhtxt/5k3swi/burned-area-severity-v3-0-1-rhtxt-5k3swi/burned-area-severity/red-channel-pre.tif",
+      "type": "image/tiff; application=geotiff; profile=cloud-optimized",
+      "s_expression": "(interp 1.swir22 (asarray 0 10000) (asarray 0 1))",
+      "file:size": 6066152,
+      "auth:refs": [
+        "signed_url_auth"
+      ],
+      "alternate": {
+        "https": {
+          "href": "https://download.geohazards-tep.eu/6e6f723235313539/collections/burned-area-severity-v3-0-1-rhtxt-5k3swi/items/burned-area-severity/assets/red-channel-pre",
+          "alternate:name": "HTTPS"
+        }
+      },
+      "roles": [
+        "data",
+        "visual"
+      ]
+    },
+    "green-channel-pre": {
+      "href": "s3://argo-wf-gep-6e6f723235313539/6e6f723235313539/burned-area-severity-v3-0-1/rhtxt/5k3swi/burned-area-severity-v3-0-1-rhtxt-5k3swi/burned-area-severity/green-channel-pre.tif",
+      "type": "image/tiff; application=geotiff; profile=cloud-optimized",
+      "s_expression": "(interp 1.nir (asarray 0 10000) (asarray 0 1))",
+      "file:size": 6649819,
+      "auth:refs": [
+        "signed_url_auth"
+      ],
+      "alternate": {
+        "https": {
+          "href": "https://download.geohazards-tep.eu/6e6f723235313539/collections/burned-area-severity-v3-0-1-rhtxt-5k3swi/items/burned-area-severity/assets/red-channel-post",
+          "alternate:name": "HTTPS"
+        }
+      },
+      "roles": [
+        "data",
+        "visual"
+      ]
+    },
+    "green-channel-post": {
+      "href": "s3://argo-wf-gep-6e6f723235313539/6e6f723235313539/burned-area-severity-v3-0-1/rhtxt/5k3swi/burned-area-severity-v3-0-1-rhtxt-5k3swi/burned-area-severity/green-channel-post.tif",
+      "type": "image/tiff; application=geotiff; profile=cloud-optimized",
+      "s_expression": "(interp 2.nir (asarray 0 10000) (asarray 0 1))",
+      "file:size": 13907740,
+      "auth:refs": [
+        "signed_url_auth"
+      ],
+      "alternate": {
+        "https": {
+          "href": "https://download.geohazards-tep.eu/6e6f723235313539/collections/burned-area-severity-v3-0-1-rhtxt-5k3swi/items/burned-area-severity/assets/green-channel-post",
+          "alternate:name": "HTTPS"
+        }
+      },
+      "roles": [
+        "data",
+        "visual"
+      ]
+    },
+    "blue-channel-post": {
+      "href": "s3://argo-wf-gep-6e6f723235313539/6e6f723235313539/burned-area-severity-v3-0-1/rhtxt/5k3swi/burned-area-severity-v3-0-1-rhtxt-5k3swi/burned-area-severity/blue-channel-post.tif",
+      "type": "image/tiff; application=geotiff; profile=cloud-optimized",
+      "s_expression": "(interp 2.red (asarray 0 10000) (asarray 0 1))",
+      "file:size": 11267138,
+      "auth:refs": [
+        "signed_url_auth"
+      ],
+      "alternate": {
+        "https": {
+          "href": "https://download.geohazards-tep.eu/6e6f723235313539/collections/burned-area-severity-v3-0-1-rhtxt-5k3swi/items/burned-area-severity/assets/blue-channel-post",
+          "alternate:name": "HTTPS"
+        }
+      },
+      "roles": [
+        "data",
+        "visual"
+      ]
+    },
+    "red_pre": {
+      "href": "s3://argo-wf-gep-6e6f723235313539/6e6f723235313539/burned-area-severity-v3-0-1/rhtxt/5k3swi/burned-area-severity-v3-0-1-rhtxt-5k3swi/burned-area-severity/S2A_MSIL2A_20220717T100611_N0510_R022_T33UVS_20240717T130024.1/red.tif",
+      "type": "image/tiff; application=geotiff; profile=cloud-optimized",
+      "provenance": "S2A_MSIL2A_20220717T100611_N0510_R022_T33UVS_20240717T130024",
+      "datetime": "2022-07-17T10:06:11Z",
+      "key": "ared",
+      "file:size": 12612765,
+      "auth:refs": [
+        "signed_url_auth"
+      ],
+      "alternate": {
+        "https": {
+          "href": "https://download.geohazards-tep.eu/6e6f723235313539/collections/burned-area-severity-v3-0-1-rhtxt-5k3swi/items/burned-area-severity/assets/red_pre",
+          "alternate:name": "HTTPS"
+        }
+      },
+      "roles": [
+        "data",
+        "visual",
+        "reflectance"
+      ]
+    },
+    "nir_pre": {
+      "href": "s3://argo-wf-gep-6e6f723235313539/6e6f723235313539/burned-area-severity-v3-0-1/rhtxt/5k3swi/burned-area-severity-v3-0-1-rhtxt-5k3swi/burned-area-severity/S2A_MSIL2A_20220717T100611_N0510_R022_T33UVS_20240717T130024.1/nir.tif",
+      "type": "image/tiff; application=geotiff; profile=cloud-optimized",
+      "provenance": "S2A_MSIL2A_20220717T100611_N0510_R022_T33UVS_20240717T130024",
+      "datetime": "2022-07-17T10:06:11Z",
+      "key": "anir",
+      "file:size": 12754990,
+      "auth:refs": [
+        "signed_url_auth"
+      ],
+      "alternate": {
+        "https": {
+          "href": "https://download.geohazards-tep.eu/6e6f723235313539/collections/burned-area-severity-v3-0-1-rhtxt-5k3swi/items/burned-area-severity/assets/nir_pre",
+          "alternate:name": "HTTPS"
+        }
+      },
+      "roles": [
+        "data",
+        "visual",
+        "reflectance"
+      ]
+    },
+    "swir22_pre": {
+      "href": "s3://argo-wf-gep-6e6f723235313539/6e6f723235313539/burned-area-severity-v3-0-1/rhtxt/5k3swi/burned-area-severity-v3-0-1-rhtxt-5k3swi/burned-area-severity/S2A_MSIL2A_20220717T100611_N0510_R022_T33UVS_20240717T130024.1/swir22.tif",
+      "type": "image/tiff; application=geotiff; profile=cloud-optimized",
+      "provenance": "S2A_MSIL2A_20220717T100611_N0510_R022_T33UVS_20240717T130024",
+      "datetime": "2022-07-17T10:06:11Z",
+      "key": "aswir22",
+      "file:size": 8027554,
+      "auth:refs": [
+        "signed_url_auth"
+      ],
+      "alternate": {
+        "https": {
+          "href": "https://download.geohazards-tep.eu/6e6f723235313539/collections/burned-area-severity-v3-0-1-rhtxt-5k3swi/items/burned-area-severity/assets/swir22_pre",
+          "alternate:name": "HTTPS"
+        }
+      },
+      "roles": [
+        "data",
+        "visual",
+        "reflectance"
+      ]
+    },
+    "blue_pre": {
+      "href": "s3://argo-wf-gep-6e6f723235313539/6e6f723235313539/burned-area-severity-v3-0-1/rhtxt/5k3swi/burned-area-severity-v3-0-1-rhtxt-5k3swi/burned-area-severity/S2A_MSIL2A_20220717T100611_N0510_R022_T33UVS_20240717T130024.1/blue.tif",
+      "type": "image/tiff; application=geotiff; profile=cloud-optimized",
+      "provenance": "S2A_MSIL2A_20220717T100611_N0510_R022_T33UVS_20240717T130024",
+      "datetime": "2022-07-17T10:06:11Z",
+      "file:size": 12455277,
+      "auth:refs": [
+        "signed_url_auth"
+      ],
+      "alternate": {
+        "https": {
+          "href": "https://download.geohazards-tep.eu/6e6f723235313539/collections/burned-area-severity-v3-0-1-rhtxt-5k3swi/items/burned-area-severity/assets/blue_pre",
+          "alternate:name": "HTTPS"
+        }
+      },
+      "roles": [
+        "data",
+        "visual",
+        "reflectance"
+      ]
+    },
+    "green_pre": {
+      "href": "s3://argo-wf-gep-6e6f723235313539/6e6f723235313539/burned-area-severity-v3-0-1/rhtxt/5k3swi/burned-area-severity-v3-0-1-rhtxt-5k3swi/burned-area-severity/S2A_MSIL2A_20220717T100611_N0510_R022_T33UVS_20240717T130024.1/green.tif",
+      "type": "image/tiff; application=geotiff; profile=cloud-optimized",
+      "provenance": "S2A_MSIL2A_20220717T100611_N0510_R022_T33UVS_20240717T130024",
+      "datetime": "2022-07-17T10:06:11Z",
+      "file:size": 12500877,
+      "auth:refs": [
+        "signed_url_auth"
+      ],
+      "alternate": {
+        "https": {
+          "href": "https://download.geohazards-tep.eu/6e6f723235313539/collections/burned-area-severity-v3-0-1-rhtxt-5k3swi/items/burned-area-severity/assets/green_pre",
+          "alternate:name": "HTTPS"
+        }
+      },
+      "roles": [
+        "data",
+        "visual",
+        "reflectance"
+      ]
+    },
+    "red_post": {
+      "href": "s3://argo-wf-gep-6e6f723235313539/6e6f723235313539/burned-area-severity-v3-0-1/rhtxt/5k3swi/burned-area-severity-v3-0-1-rhtxt-5k3swi/burned-area-severity/S2A_MSIL2A_20220905T100611_N0510_R022_T33UVS_20240727T103637.2/red.tif",
+      "type": "image/tiff; application=geotiff; profile=cloud-optimized",
+      "roles": [
+        "data",
+        "visual",
+        "reflectance"
+      ]
+    },
+    "nir_post": {
+      "href": "s3://argo-wf-gep-6e6f723235313539/6e6f723235313539/burned-area-severity-v3-0-1/rhtxt/5k3swi/burned-area-severity-v3-0-1-rhtxt-5k3swi/burned-area-severity/S2A_MSIL2A_20220905T100611_N0510_R022_T33UVS_20240727T103637.2/nir.tif",
+      "type": "image/tiff; application=geotiff; profile=cloud-optimized",
+      "roles": [
+        "data",
+        "visual",
+        "reflectance"
+      ]
+    },
+    "blue_post": {
+      "href": "s3://argo-wf-gep-6e6f723235313539/6e6f723235313539/burned-area-severity-v3-0-1/rhtxt/5k3swi/burned-area-severity-v3-0-1-rhtxt-5k3swi/burned-area-severity/S2A_MSIL2A_20220905T100611_N0510_R022_T33UVS_20240727T103637.2/blue.tif",
+      "type": "image/tiff; application=geotiff; profile=cloud-optimized",
+      "roles": [
+        "data",
+        "visual",
+        "reflectance"
+      ]
+    },
+    "green_post": {
+      "href": "s3://argo-wf-gep-6e6f723235313539/6e6f723235313539/burned-area-severity-v3-0-1/rhtxt/5k3swi/burned-area-severity-v3-0-1-rhtxt-5k3swi/burned-area-severity/S2A_MSIL2A_20220905T100611_N0510_R022_T33UVS_20240727T103637.2/green.tif",
+      "type": "image/tiff; application=geotiff; profile=cloud-optimized",
+      "roles": [
+        "data",
+        "visual",
+        "reflectance"
+      ]
+    }
+  }
+}
