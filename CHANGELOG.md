@@ -6,6 +6,17 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+### Added
+
+- Add `expression_type`, a media type identifying the dialect of `expression` (e.g. `text/x-numexpr`,
+  `application/vnd.maplibre.expression+json`), and a `rel: "stylesheet"` link relation for referencing external
+  style documents (SLD, Mapbox/MapLibre Style, OpenLayers Flatstyle, QGIS QML), sharing the same media-type
+  vocabulary. A stylesheet link may also address a specific named layer/style inside a multi-layer document via
+  a URI fragment on `href` ([#17](https://github.com/stac-extensions/render/issues/17),
+  [#21](https://github.com/stac-extensions/render/issues/21))
+- Add a vector data example (`examples/item-vector.json`), showing the extension used on non-raster data with
+  a MapLibre expression and stylesheet link
+
 ### Fixed
 
 - Document that `expression` accepts `string`, `object`, or `array`, matching the schema ([#8](https://github.com/stac-extensions/render/issues/8))
