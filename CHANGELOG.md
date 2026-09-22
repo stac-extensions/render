@@ -6,6 +6,17 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+### Added
+
+- Add `minmax_resolution`, expressing the visible resolution range in `gsd` units (meters/pixel) instead of
+  ambiguous zoom levels, and explain the zoom-to-resolution calculation for implementations that still need
+  zoom levels ([#16](https://github.com/stac-extensions/render/issues/16))
+
+### Deprecated
+
+- `minmax_zoom` is deprecated in favor of `minmax_resolution`, since "zoom level" depends on a mapping library's
+  tile size convention (e.g. 256px vs 512px) and is not portable across libraries ([#16](https://github.com/stac-extensions/render/issues/16))
+
 ### Fixed
 
 - Document that `expression` accepts `string`, `object`, or `array`, matching the schema ([#8](https://github.com/stac-extensions/render/issues/8))

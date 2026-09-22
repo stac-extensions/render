@@ -83,7 +83,11 @@
             9000
           ]
         ],
-        "resampling": "nearest"
+        "resampling": "nearest",
+        "minmax_resolution": [
+          10,
+          1000
+        ]
       }
     }
   },
