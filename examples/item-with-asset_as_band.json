@@ -9,15 +9,35 @@
     "type": "Polygon",
     "coordinates": [
       [
-        [14.4, 51],
-        [14.4, 50.8],
-        [14.1, 50.8],
-        [14.1, 51],
-        [14.4, 51]
+        [
+          14.4,
+          51
+        ],
+        [
+          14.4,
+          50.8
+        ],
+        [
+          14.1,
+          50.8
+        ],
+        [
+          14.1,
+          51
+        ],
+        [
+          14.4,
+          51
+        ]
       ]
     ]
   },
-  "bbox": [14.1, 50.8, 14.4, 51],
+  "bbox": [
+    14.1,
+    50.8,
+    14.4,
+    51
+  ],
   "properties": {
     "datetime": "2022-07-17T10:06:11.024000Z",
     "title": "Burned Area Severity Analysis",
@@ -38,7 +58,7 @@
           "5": "#BD0026"
         },
         "expression": "where(rbr>0.7,5,where(rbr>0.6,4,where(rbr>0.5,3,where(rbr>0.4,2,where(rbr>0.3,1,0)))))",
-        "asset_as_band": "true"
+        "asset_as_band": true
       },
       "dnbr-overview": {
         "title": "DNBR index overview",
@@ -54,7 +74,7 @@
           "4": "#780000"
         },
         "expression": "where(dnbr>0.659,4,where(dnbr>0.439,3,where(dnbr>0.269,2,where(dnbr>0.1,1,0))))",
-        "asset_as_band": "true"
+        "asset_as_band": true
       },
       "civ-overview-pre": {
         "title": "CIV overview pre event",
