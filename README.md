@@ -45,7 +45,8 @@ The fields in the table below can be used in these parts of STAC documents:
 | color_formula | string    | [Color formula](https://developmentseed.org/titiler/advanced/rendering/#color-formula) that must be applied for a raster band                                            |
 | resampling    | string    | Resampling algorithm to apply to the referenced assets. See [GDAL resampling algorithm](https://gdal.org/programs/gdalwarp.html#cmdoption-gdalwarp-r) for some examples. |
 | expression    | string, object, array | Band arithmetic formula to apply to the referenced assets. The format is defined by the rendering application, e.g. a [TiTiler](https://developmentseed.org/titiler/) band math string or a [MapLibre](https://maplibre.org/maplibre-style-spec/expressions/) style expression array. |
-| minmax_zoom   | \[int]    | Zoom levels range applicable for the visualization                                                                                                                       |
+| minmax_zoom   | \[int]    | **Deprecated**, use `minmax_resolution` instead. Zoom levels range applicable for the visualization. Ambiguous across mapping libraries, see [Resolution vs. zoom levels](#resolution-vs-zoom-levels). |
+| minmax_resolution | \[float] | Min/max ground sample distance (resolution), in the same unit as [`gsd`](https://github.com/radiantearth/stac-spec/blob/master/item-spec/common-metadata.md#instrument), applicable for the visualization. Preferred over `minmax_zoom` since it is independent of any tiling scheme or library convention. |
 
 The `render` object is open ended, so additional fields can be provided according to the needs of the rendering application.
 
@@ -85,6 +86,43 @@ It is specified as a 2 dimensions array of delimited Min,Max range per band.
 A prescaling can also be performed according to the `offset` and `scale` fields value of the
 [raster](https://github.com/stac-extensions/raster) extension.
 
+## Resolution vs. zoom levels
+
+`minmax_zoom` is **deprecated** in favor of `minmax_resolution` because "zoom level" is not an absolute unit:
+it is only meaningful relative to a tiling scheme's tile pixel size and projection. The same integer zoom level
+maps to a different ground resolution depending on the mapping library, because libraries disagree on the
+default tile size:
+
+- [OpenLayers](https://openlayers.org/), [Leaflet](https://leafletjs.com/) and classic XYZ/TMS tile servers
+  default to **256px** tiles.
+- [MapLibre GL JS](https://maplibre.org/) and Mapbox GL JS default to **512px** tiles.
+
+For a Web Mercator (EPSG:3857) tile pyramid, the resolution at a given zoom level is:
+
+```text
+resolution (m/px) = equatorial_circumference / (tile_size_px * 2^zoom)
+```
+
+where `equatorial_circumference` is ~40,075,016.6856 m. Since resolution at 512px-tile zoom `Z` equals the
+resolution at 256px-tile zoom `Z + 1`, the same `minmax_zoom` value shows a different level of detail depending
+on which library reads it.
+
+`minmax_resolution` avoids this by expressing the range directly in ground resolution (the same unit as
+[`gsd`](https://github.com/radiantearth/stac-spec/blob/master/item-spec/common-metadata.md#instrument), meters
+per pixel), independent of any tiling scheme. A client can derive the zoom level for its own tile size with the
+inverse formula:
+
+```text
+zoom = log2(equatorial_circumference / (tile_size_px * resolution))
+```
+
+For example, `"minmax_resolution": [10, 1000]` (10 m/px to 1000 m/px) converts to:
+
+| tile size | minzoom | maxzoom |
+| --------- | ------- | ------- |
+| 256px (OpenLayers, Leaflet)   | 7  | 14 |
+| 512px (MapLibre GL, Mapbox GL) | 6  | 13 |
+
 ## Dynamic tile servers integration
 
 The render objects are designed to be used by dynamic tile servers to produce RGB tiles from a STAC Item.
@@ -114,6 +152,7 @@ by simply specifying the `url` and `assets` query parameters.
 | `color_formula` | `color_formula`                        | Color formula as defined in `color_formula` field of the `asset`                                                                    |
 | `resampling`    | `resampling`                           | Resampling method to use when reprojecting the raster.                                                                              |
 | `bidx`    | `bidx`                           | Dataset band indexes                                                                            |
+| `minzoom`, `maxzoom` (on the `tilejson.json` endpoint) | `minmax_resolution` | Computed from `minmax_resolution` using `zoom = log2(equatorial_circumference / (tile_size_px * resolution))`. titiler's default `WebMercatorQuad` tile matrix set uses a `tile_size_px` of 256, see [Resolution vs. zoom levels](#resolution-vs-zoom-levels). |
 
 #### Shortwave Infra-red visual thermal signature example
 
@@ -127,7 +166,8 @@ From the [Sentinel-2 item](https://github.com/stac-extensions/virtual-assets/blo
       "title": "Shortwave Infra-red",
       "assets": [ "swir22", "nir",  "red" ],
       "rescale": [[0,5000],[0,7000],[0,9000]],
-      "resampling": "nearest"
+      "resampling": "nearest",
+      "minmax_resolution": [10, 1000]
     }
   }
 }

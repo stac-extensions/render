@@ -208,6 +208,12 @@
         {
           "type": "object",
           "required": [
+            "minmax_resolution"
+          ]
+        },
+        {
+          "type": "object",
+          "required": [
             "bidx"
           ]
         }
@@ -260,6 +266,12 @@
           "type": ["string", "object", "array"]
         },
         "minmax_zoom": {
+          "type": "array",
+          "items": {
+            "type": "number"
+          }
+        },
+        "minmax_resolution": {
           "type": "array",
           "items": {
             "type": "number"
