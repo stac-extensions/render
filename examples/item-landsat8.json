@@ -115,6 +115,13 @@
       "href": "https://landsat-stac.s3.amazonaws.com/collections/landsat-8-l1.json",
       "type": "application/json",
       "title": "The full collection"
+    },
+    {
+      "rel": "stylesheet",
+      "type": "application/vnd.mapbox.style+json",
+      "href": "https://example.com/styles/ndvi.json",
+      "title": "NDVI stylesheet",
+      "render": "ndvi"
     }
   ],
   "assets": {

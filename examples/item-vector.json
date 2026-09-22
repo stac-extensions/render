@@ -1,0 +1,84 @@
+{
+  "type": "Feature",
+  "stac_version": "1.0.0",
+  "stac_extensions": [
+    "https://stac-extensions.github.io/render/v2.0.0/schema.json"
+  ],
+  "id": "roads-example",
+  "bbox": [
+    2.25,
+    48.82,
+    2.42,
+    48.9
+  ],
+  "geometry": {
+    "type": "Polygon",
+    "coordinates": [
+      [
+        [
+          2.25,
+          48.82
+        ],
+        [
+          2.25,
+          48.9
+        ],
+        [
+          2.42,
+          48.9
+        ],
+        [
+          2.42,
+          48.82
+        ],
+        [
+          2.25,
+          48.82
+        ]
+      ]
+    ]
+  },
+  "properties": {
+    "datetime": "2024-01-01T00:00:00Z",
+    "renders": {
+      "roads-by-class": {
+        "title": "Roads colored by class",
+        "assets": [
+          "roads"
+        ],
+        "expression": [
+          "match",
+          [
+            "get",
+            "class"
+          ],
+          "motorway",
+          "#e15c5c",
+          "primary",
+          "#f2b46d",
+          "#cccccc"
+        ],
+        "expression_type": "application/vnd.maplibre.expression+json"
+      }
+    }
+  },
+  "links": [
+    {
+      "rel": "stylesheet",
+      "type": "application/vnd.mapbox.style+json",
+      "href": "https://example.com/styles/roads.json",
+      "title": "Roads MapLibre style",
+      "render": "roads-by-class"
+    }
+  ],
+  "assets": {
+    "roads": {
+      "title": "Road network",
+      "type": "application/geo+json",
+      "roles": [
+        "data"
+      ],
+      "href": "https://example.com/data/roads.geojson"
+    }
+  }
+}

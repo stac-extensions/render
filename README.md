@@ -14,6 +14,7 @@ Rendering extension aims at providings consumers with the possible rendering of 
 - Examples:
   - [Landsat-8 example](examples/item-landsat8.json): Shows the basic usage of the extension in a landsat-8 STAC Item
   - [Sentinel-2 example](examples/item-sentinel2.json): Shows the basic usage of the extension in a Sentinel-2 STAC Item
+  - [Vector example](examples/item-vector.json): Shows the extension used on vector data, styled with a MapLibre expression and stylesheet link
   - [Collection example](examples/collection.json): Shows the basic usage of the extension in a collection
 - [JSON Schema](json-schema/schema.json)
 - [Changelog](./CHANGELOG.md)
@@ -44,7 +45,8 @@ The fields in the table below can be used in these parts of STAC documents:
 | colormap      | object    | [Color map JSON definition](https://developmentseed.org/titiler/advanced/rendering/#custom-colormaps) that must be applied for a raster band                             |
 | color_formula | string    | [Color formula](https://developmentseed.org/titiler/advanced/rendering/#color-formula) that must be applied for a raster band                                            |
 | resampling    | string    | Resampling algorithm to apply to the referenced assets. See [GDAL resampling algorithm](https://gdal.org/programs/gdalwarp.html#cmdoption-gdalwarp-r) for some examples. |
-| expression    | string, object, array | Band arithmetic formula to apply to the referenced assets. The format is defined by the rendering application, e.g. a [TiTiler](https://developmentseed.org/titiler/) band math string or a [MapLibre](https://maplibre.org/maplibre-style-spec/expressions/) style expression array. |
+| expression    | string, object, array | Expression to derive the rendered value(s) from the referenced assets, e.g. a band-math formula or a style expression (which may also cover conditionals, interpolation, or other non-arithmetic operations). See [Expression and stylesheet formats](#expression-and-stylesheet-formats) for how to identify its dialect with `expression_type`. |
+| expression_type | string  | Media type identifying the dialect of `expression` (e.g. `text/x-numexpr`, `application/vnd.maplibre.expression+json`). See [Expression and stylesheet formats](#expression-and-stylesheet-formats). If not set, a string `expression` SHOULD be assumed to be `text/x-numexpr` for backwards compatibility; an object or array `expression` SHOULD NOT be assumed to be any particular dialect. |
 | minmax_zoom   | \[int]    | Zoom levels range applicable for the visualization                                                                                                                       |
 
 The `render` object is open ended, so additional fields can be provided according to the needs of the rendering application.
@@ -84,6 +86,43 @@ It is specified as a 2 dimensions array of delimited Min,Max range per band.
 
 A prescaling can also be performed according to the `offset` and `scale` fields value of the
 [raster](https://github.com/stac-extensions/raster) extension.
+
+## Expression and stylesheet formats
+
+The `render` object is intentionally implementation-agnostic: `expression` and, via
+[stylesheet links](#stylesheet-links), a whole external stylesheet, can each be written in more than one
+dialect (band-math strings, JSON style-expression arrays, XML style documents, ...). Without saying which
+dialect a given value uses, a client has no reliable way to parse it. For example, all of the following are
+different, mutually incompatible ways to express the same NDVI formula:
+
+- `numexpr` (used by [TiTiler](https://github.com/developmentseed/titiler)/rio-tiler): a Python-like string,
+  e.g. `"(B08-B04)/(B08+B04)"`.
+- [MapLibre GL / Mapbox GL style expressions](https://maplibre.org/maplibre-style-spec/expressions/): a JSON
+  array, e.g. `["/", ["-", ["band", 2], ["band", 1]], ["+", ["band", 2], ["band", 1]]]`.
+- [OpenLayers style expressions](https://openlayers.org/en/latest/apidoc/module-ol_expr_expression.html): also
+  JSON-array-based, but a **distinct grammar** from MapLibre/Mapbox's, despite the superficial similarity
+  (OpenLayers bridges to actual Mapbox/MapLibre style documents only via the separate
+  [`ol-mapbox-style`](https://github.com/openlayers/ol-mapbox-style) adapter package, not natively).
+
+None of these dialects has a formally IANA-registered media type. Where possible this extension reuses the
+same informal `vnd.` media types already used by [OGC API - Styles](https://docs.ogc.org/DRAFTS/20-009.html)
+for whole stylesheet documents; for expression fragments and dialects OGC API - Styles doesn't cover, this
+extension defines its own, following the same `vnd.`/`x-` conventions:
+
+| Format | Media type | Scope |
+| --- | --- | --- |
+| `numexpr` band math | `text/x-numexpr` | `expression` fragment (string) |
+| MapLibre/Mapbox GL style expression | `application/vnd.maplibre.expression+json` | `expression` fragment (array) |
+| OpenLayers style expression | `application/vnd.openlayers.expression+json` | `expression` fragment (array) |
+| Mapbox/MapLibre Style (full stylesheet) | `application/vnd.mapbox.style+json` | stylesheet document (reused from OGC API - Styles) |
+| OGC Styled Layer Descriptor (SLD) | `application/vnd.ogc.sld+xml` | stylesheet document (reused from OGC API - Styles) |
+| OpenLayers Flatstyle (full stylesheet) | `application/vnd.openlayers.flatstyle+json` | stylesheet document |
+| QGIS QML style | `application/vnd.qgis.qml+xml` | stylesheet document |
+
+`expression_type` uses the "expression fragment" rows to disambiguate the `expression` field. A
+[stylesheet link](#stylesheet-links)'s `type` uses the "stylesheet document" rows, since it points at a
+whole, standalone style document rather than a single formula. This table is not exhaustive: additional
+formats can be added following the same convention as new renderers need to be supported.
 
 ## Dynamic tile servers integration
 
@@ -213,6 +252,7 @@ Obviously, the same rendering can be applied to local source assets without usin
       "resampling": "average",
       "colormap_name": "ylgn",
       "expression": "(B05–B04)/(B05+B04)",
+      "expression_type": "text/x-numexpr",
       "rescale": [[-1,1]]
     }
   }
@@ -239,6 +279,51 @@ in order to provide a cross link to the render object.
   "href": "https://api.cogeo.xyz/stac/preview.png?url=https://raw.githubusercontent.com/stac-extensions/raster/main/examples/item-landsat8.json&expression=(B5–B4)/(B5+B4)&max_size=512&width=512&resampling_method=average&rescale=-1,1&color_map=ylgn&return_mask=true",
   "render": "ndvi"
 }
+```
+
+### Stylesheet links
+
+To reference an external, standalone style document (as opposed to the inline `expression` field), add a
+link with `rel: "stylesheet"` to the item, collection, or (as any STAC Link object) asset. The link MUST
+carry a `type` identifying the stylesheet's format, using the "stylesheet document" media types from
+[Expression and stylesheet formats](#expression-and-stylesheet-formats) (e.g. SLD, Mapbox/MapLibre Style,
+OpenLayers Flatstyle, QGIS QML). Like the web map link's `render` attribute, a stylesheet link MAY set
+`render` to cross-reference which `renders` entry it styles.
+
+```json
+{
+  "rel": "stylesheet",
+  "type": "application/vnd.mapbox.style+json",
+  "href": "https://example.com/styles/ndvi.json",
+  "render": "ndvi"
+}
+```
+
+#### Addressing a layer within a stylesheet
+
+A single stylesheet document can define more than one named layer or style. When that is the case, `render`
+alone is not enough to disambiguate, because it names which `renders` entry the link is for, not which part
+of the document to use. Append the layer/style's own name, as defined by that stylesheet format, as a URI
+fragment on `href`. This reuses each format's native naming instead of inventing a new addressing scheme:
+
+- SLD: the `<NamedLayer>`/`<UserStyle>` element's `<Name>` text, e.g. `styles.sld#ndvi`.
+- Mapbox/MapLibre Style: a top-level `layers[].id`, e.g. `style.json#ndvi-layer`.
+
+```json
+"links": [
+  {
+    "rel": "stylesheet",
+    "type": "application/vnd.ogc.sld+xml",
+    "href": "https://example.com/styles/multi.sld#ndvi",
+    "render": "ndvi"
+  },
+  {
+    "rel": "stylesheet",
+    "type": "application/vnd.ogc.sld+xml",
+    "href": "https://example.com/styles/multi.sld#sir",
+    "render": "sir"
+  }
+]
 ```
 
 ## Contributing

@@ -65,6 +65,16 @@
               }
             }
           }
+        },
+        {
+          "properties": {
+            "links": {
+              "type": "array",
+              "items": {
+                "$ref": "#/definitions/stylesheet_link"
+              }
+            }
+          }
         }
       ]
     },
@@ -128,6 +138,22 @@
     }
   ],
   "definitions": {
+    "stylesheet_link": {
+      "$comment": "If a link's rel is 'stylesheet', it MUST carry a media type identifying the stylesheet format.",
+      "if": {
+        "type": "object",
+        "required": ["rel"],
+        "properties": {
+          "rel": {
+            "const": "stylesheet"
+          }
+        }
+      },
+      "then": {
+        "type": "object",
+        "required": ["type"]
+      }
+    },
     "stac_extensions": {
       "type": "object",
       "required": [
@@ -258,6 +284,9 @@
         },
         "expression": {
           "type": ["string", "object", "array"]
+        },
+        "expression_type": {
+          "type": "string"
         },
         "minmax_zoom": {
           "type": "array",
