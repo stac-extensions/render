@@ -6,6 +6,16 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+### Added
+
+- Extend `bidx` to accept a band name (matching the `name` of a Band Object declared on the asset via
+  `eo:bands`, `raster:bands`, or the STAC 1.1+ common `bands` construct) alongside a 1-based index, and
+  restructure it as one array per position in `assets`, so a band selection can be tied unambiguously to a
+  specific asset when there is more than one. Documents `bidx`'s indexing convention, which was previously
+  unspecified ([#18](https://github.com/stac-extensions/render/issues/18))
+- Add a Planet example (`examples/item-planet.json`), demonstrating `bidx` name-based selectors on a genuine
+  single multi-band asset (PlanetScope's 8-band analytic product), using STAC 1.1.0's common `bands` construct
+
 ## [2.1.0] - 2026-09-22
 
 ### Added

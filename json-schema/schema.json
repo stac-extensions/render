@@ -274,7 +274,10 @@
         "bidx": {
           "type": "array",
           "items": {
-            "type": "number"
+            "type": "array",
+            "items": {
+              "type": ["number", "string"]
+            }
           }
         },
         "asset_as_band": {
