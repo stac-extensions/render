@@ -51,13 +51,6 @@
         "assets": [
           "analytic"
         ],
-        "bands": [
-          [
-            "red",
-            "green",
-            "blue"
-          ]
-        ],
         "rescale": [
           [
             0,
@@ -72,20 +65,20 @@
             10000
           ]
         ],
-        "resampling": "bilinear"
+        "resampling": "bilinear",
+        "bidx": [
+          [
+            "red",
+            "green",
+            "blue"
+          ]
+        ]
       },
       "false-color": {
         "title": "False color (NIR-Red-Green) composite",
         "assets": [
           "analytic"
         ],
-        "bands": [
-          [
-            "nir",
-            "red",
-            "green"
-          ]
-        ],
         "rescale": [
           [
             0,
@@ -100,7 +93,14 @@
             10000
           ]
         ],
-        "resampling": "bilinear"
+        "resampling": "bilinear",
+        "bidx": [
+          [
+            "nir",
+            "red",
+            "green"
+          ]
+        ]
       }
     }
   },
