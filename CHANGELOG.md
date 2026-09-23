@@ -16,9 +16,20 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Add a Planet example (`examples/item-planet.json`), demonstrating `bidx` name-based selectors on a genuine
   single multi-band asset (PlanetScope's 8-band analytic product), using STAC 1.1.0's common `bands` construct
 
+## [2.1.0] - 2026-09-22
+
+### Added
+
+- Adds `asset_as_band` property in `render` object ([#12](https://github.com/stac-extensions/render/issues/12))
+
 ### Fixed
 
 - Document that `expression` accepts `string`, `object`, or `array`, matching the schema ([#8](https://github.com/stac-extensions/render/issues/8))
+- Clarify that `nodata` overrides any nodata value already defined on the referenced assets for this specific
+  render, rather than duplicating it ([#15](https://github.com/stac-extensions/render/issues/15))
+- Update broken titiler `colormap`/`color_formula` doc links and replace the dead `api.cogeo.xyz` demo host.
+  Rework the NDVI example around the still-live Sentinel-2 item, since the Landsat-8 example's source imagery
+  was removed from the public `landsat-pds` bucket ([#13](https://github.com/stac-extensions/render/issues/13))
 
 ## [2.0.0] - 2024-11-19
 
@@ -40,6 +51,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 Initial release
 
-[Unreleased]: <https://github.com/stac-extensions/render/compare/v2.0.0...HEAD>
+[Unreleased]: <https://github.com/stac-extensions/render/compare/v2.1.0...HEAD>
+[2.1.0]: <https://github.com/stac-extensions/render/compare/v2.0.0...v2.1.0>
 [2.0.0]: <https://github.com/stac-extensions/render/compare/v2.0.0...v1.0.0>
 [1.0.0]: <https://github.com/stac-extensions/render/compare/v1.0.0...HEAD>
