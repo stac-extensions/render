@@ -46,6 +46,7 @@ The fields in the table below can be used in these parts of STAC documents:
 | resampling    | string    | Resampling algorithm to apply to the referenced assets. See [GDAL resampling algorithm](https://gdal.org/programs/gdalwarp.html#cmdoption-gdalwarp-r) for some examples. |
 | expression    | string, object, array | Band arithmetic formula to apply to the referenced assets. The format is defined by the rendering application, e.g. a [TiTiler](https://developmentseed.org/titiler/) band math string or a [MapLibre](https://maplibre.org/maplibre-style-spec/expressions/) style expression array. |
 | minmax_zoom   | \[int]    | Zoom levels range applicable for the visualization                                                                                                                       |
+| bidx          | \[int]    | 1-based band indexes into the referenced assets (matching the GDAL/rio-tiler/titiler convention: the first band is `1`, not `0`). Only meaningful if you already know how the asset's bands are physically ordered — there is no required correspondence to any STAC band metadata (`eo:bands`, `raster:bands`, or the common `bands` construct). |
 | asset_as_band | boolean   | Treat assets in `expression` as single bands. Required when expression uses multiple assets           |
 
 The `render` object is open ended, so additional fields can be provided according to the needs of the rendering application.
