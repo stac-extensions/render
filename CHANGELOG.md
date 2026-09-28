@@ -6,6 +6,11 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+### Fixed
+
+- Document `bidx`: 1-based band index into the referenced assets, with no required correspondence to any
+  STAC band metadata ([#18](https://github.com/stac-extensions/render/issues/18))
+
 ## [2.1.0] - 2026-09-22
 
 ### Added
