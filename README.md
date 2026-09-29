@@ -46,7 +46,7 @@ The fields in the table below can be used in these parts of STAC documents:
 | color_formula | string    | [Color formula](https://developmentseed.org/titiler/user_guide/rendering/#color-formula) that must be applied for a raster band                                            |
 | resampling    | string    | Resampling algorithm to apply to the referenced assets. See [GDAL resampling algorithm](https://gdal.org/programs/gdalwarp.html#cmdoption-gdalwarp-r) for some examples. |
 | expression    | string, object, array | Expression to derive the rendered value(s) from the referenced assets, e.g. a band-math formula or a style expression (which may also cover conditionals, interpolation, or other non-arithmetic operations). See [Expression and stylesheet formats](#expression-and-stylesheet-formats) for how to identify its dialect with `expression_type`. |
-| expression_type | string  | Media type identifying the dialect of `expression` (e.g. `text/x-numexpr`, `application/vnd.maplibre.expression+json`). See [Expression and stylesheet formats](#expression-and-stylesheet-formats). If not set, a string `expression` SHOULD be assumed to be `text/x-numexpr` for backwards compatibility; an object or array `expression` SHOULD NOT be assumed to be any particular dialect. |
+| expression_type | string  | Media type identifying the dialect of `expression` (e.g. `text/x-numexpr`, `application/vnd.maplibre.expression+json`). If `expression_type` is set, `expression` MUST also be set — but not the reverse: `expression` alone remains valid. See [Expression and stylesheet formats](#expression-and-stylesheet-formats). If not set, a string `expression` SHOULD be assumed to be `text/x-numexpr` for backwards compatibility; an object or array `expression` SHOULD NOT be assumed to be any particular dialect. |
 | minmax_zoom   | \[int]    | Zoom levels range applicable for the visualization                                                                                                                       |
 | asset_as_band | boolean   | Treat assets in `expression` as single bands. Required when expression uses multiple assets           |
 
@@ -296,11 +296,21 @@ in order to provide a cross link to the render object.
 ### Stylesheet links
 
 To reference an external, standalone style document (as opposed to the inline `expression` field), add a
-link with `rel: "stylesheet"` to the item, collection, or (as any STAC Link object) asset. The link MUST
-carry a `type` identifying the stylesheet's format, using the "stylesheet document" media types from
+link with `rel: "stylesheet"` to the item or collection's `links` array (STAC Asset Objects have no
+`links` field of their own, so a stylesheet link always lives at the item/collection level, even when it
+styles a single asset). The link MUST carry a `type` identifying the stylesheet's format, using the
+"stylesheet document" media types from
 [Expression and stylesheet formats](#expression-and-stylesheet-formats) (e.g. SLD, Mapbox/MapLibre Style,
-OpenLayers Flatstyle, QGIS QML). Like the web map link's `render` attribute, a stylesheet link MAY set
-`render` to cross-reference which `renders` entry it styles.
+OpenLayers Flatstyle, QGIS QML).
+
+A stylesheet link does not require the `render` extension. It can cross-reference what it styles two
+ways, independently of each other:
+
+- `render`, the same attribute used by [web map links](#additional-attributes), naming which `renders`
+  entry it styles. Useful for fine-tuning a specific render's presentation (see the examples below).
+- `assets`, an array of asset keys the stylesheet applies to directly. Useful when there is no `render`
+  entry at all — e.g. a vector item that has no raster pixels to rescale/colormap, only a style to
+  apply. `render` primarily targets raster data, so this is the expected path for vector styling.
 
 ```json
 {
@@ -308,6 +318,15 @@ OpenLayers Flatstyle, QGIS QML). Like the web map link's `render` attribute, a s
   "type": "application/vnd.mapbox.style+json",
   "href": "https://example.com/styles/ndvi.json",
   "render": "ndvi"
+}
+```
+
+```json
+{
+  "rel": "stylesheet",
+  "type": "application/vnd.mapbox.style+json",
+  "href": "https://example.com/styles/roads.json",
+  "assets": [ "roads" ]
 }
 ```
 

@@ -251,6 +251,12 @@
       "required": [
         "assets"
       ],
+      "if": {
+        "required": ["expression_type"]
+      },
+      "then": {
+        "required": ["expression"]
+      },
       "properties": {
         "assets": {
           "type": "array",
