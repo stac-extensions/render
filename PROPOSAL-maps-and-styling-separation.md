@@ -48,62 +48,88 @@ not duplicated. No `stac-extensions/maps` (or similarly scoped) extension curren
 
 ## Proposed mechanism
 
-A new `rel: "map"` link — shaped like `web-map-links`' existing `rel=wmts`/`rel=xyz` pattern rather
-than a new inline object, since a "map" is itself a fetchable/renderable resource (an actual endpoint
-or preview), matching OGC API - Maps' resource-oriented model. It reuses the `render` cross-reference
-attribute already established by `web-map-links` integration, rather than duplicating data-source or
-styling info onto the link itself.
+**web-map-links** — where TMS/zoom information belongs, since it's a property of a specific *service*:
 
-Raster case — data (assets, implicit via the `render` cross-reference) + style (a `renders` entry) +
-map-specific constraints:
+- Existing rel types (`xyz`, `wmts`, `wms`, `pmtiles`, `3d-tiles`, `tilejson`) are unchanged. `render`
+  as a link attribute isn't one of them either — it's defined by `render`'s own integration with
+  web-map-links, not by web-map-links itself.
+- There's already real prior art for per-TMS zoom constraints inside web-map-links today, closer than
+  `tiled-assets`: WMTS's REST encoding lets a `uriTemplate` variable like `{TileMatrix}` carry a JSON
+  Schema constraint (minimum/maximum) via `variables`, and the built-in `{TileMatrixSet}`/`{TileMatrix}`
+  placeholders are already tile-matrix-set aware without any custom field. Extending that same
+  `variables` mechanism to OGC API – Tiles (and to `xyz`, which today has no way to constrain `{z}` at
+  all) may be a smaller change than a new field, and worth checking before adding one.
+- `maps` and `tiles` are added for OGC API – Maps and OGC API – Tiles, since both are formally distinct
+  protocols from what `xyz`/`wmts` already cover.
+
+Illustrative shape, field names TBD — using the existing `variables`/JSON-Schema-constraint mechanism
+rather than a new field:
 
 ```jsonc
-{
-  "rel": "map",
-  "href": "https://tiles.example.com/{z}/{x}/{y}.png",
-  "type": "image/png",
-  "title": "True color map",
-  "render": "true-color",
-  "tilematrixsets": { "WebMercatorQuad": [8, 22] }
+"links": [
+  {
+    "rel": "tiles",
+    "type": "image/png",
+    "uriTemplate": "https://tiles.example.com/tiles/{tileMatrixSetId}/{z}/{x}/{y}.png",
+    "render": "true-color",
+    "variables": {
+      "tileMatrixSetId": { "const": "WebMercatorQuad" },
+      "z": { "type": "integer", "minimum": 8, "maximum": 22 }
+    }
+  }
+]
+```
+
+**maps** — a composition document:
+
+- A projection
+- A default extent
+- An ordered list of layers, bottom to top
+- Each layer has exactly one data source (an asset, a web-map-link, or a `render` reference) and
+  optionally one style (a `rel=stylesheet` link or a `render` reference)
+
+A single data source with a single style and its own zoom limits is just a map with one layer — the
+composition also covers what a single link structurally can't: a COG rendered client-side with no tile
+server at all, GeoParquet paired with a stylesheet, several layers shown together (see
+[#22](https://github.com/stac-extensions/render/issues/22)), or a basemap layer underneath the data.
+`source` is only needed when there's no `style.render` to imply it — a `render` entry already has its
+own `assets`, so restating them on the layer would be redundant (and could disagree with it). Illustrative
+shape, field names TBD:
+
+```jsonc
+"maps": {
+  "default": {
+    "projection": "EPSG:3857",
+    "extent": [-122.52, 37.70, -122.35, 37.83],
+    "layers": [
+      { "source": { "web_map_link": "basemap" } },
+      { "style": { "render": "true-color" } },
+      { "source": { "web_map_link": "roads-tiles" }, "style": { "stylesheet": "https://example.com/styles/roads.json" } }
+    ]
+  }
 }
 ```
 
-Vector case — data + style (a `rel=stylesheet` link) + constraints:
-
-```jsonc
-{
-  "rel": "map",
-  "href": "https://tiles.example.com/vector/{z}/{x}/{y}.pbf",
-  "type": "application/vnd.mapbox-vector-tile",
-  "title": "Roads map",
-  "stylesheet": "https://example.com/styles/roads.json",
-  "minzoom": 0,
-  "maxzoom": 14
-}
-```
-
-What this would resolve:
-
-- `render` stays scoped to pixel transformation (rescale, colormap, resampling, expression, `bidx`);
-  `minmax_zoom`/`tilematrixsets` are deprecated there in favor of living on the `rel=map` link.
-- @vincentsarago's precision need (TMS-scoped zoom) and @m-mohr's simplicity need (bare `minzoom`/`maxzoom`)
-  can both be offered on the same link.
-- Reuses an existing cross-reference pattern instead of inventing a new one.
-
-**Open question**: whether a map link should offer `tilematrixsets` and bare `minzoom`/`maxzoom` 
-side by side, or just one of them.
+**render** — carries no visibility/zoom/resolution field at all, including for the client-side-rendering
+case. That case is already covered above: a COG rendered client-side with no tile server is just a
+`maps` document with one layer and no explicit TMS, so a dedicated escape hatch on `render` would
+duplicate what `maps` already does, and reopen the exact scope creep this split exists to close.
+Keeping `render` at zero map-adjacent fields is a stronger, simpler boundary than a narrow exception
+for "just this one case."
 
 ## What changes in `render`
 
-- extension description updated to reflect limited scope to pixel transformation (rescale, colormap, resampling, expression, `bidx`)
-- `minmax_zoom` and the `tilematrixsets` field proposed in PR #27 would be deprecated/removed from
-  `render`'s own scope once this lands.
-- PR #27 would be refocused (or closed) once the group agrees on where zoom/tiling constraints belong.
+- Extension description updated to reflect the narrower scope: pixel transformation only (rescale,
+  colormap, resampling, expression, `bidx`).
+- `minmax_zoom` and the `tilematrixsets` field proposed in PR #27 are removed from `render`'s scope
+  entirely — TMS/zoom for tiled services moves to `web-map-links`, and the client-side/no-tile-server
+  case moves to `maps` (see above). `render` keeps no map-adjacent field of any kind.
+- PR #27 would be closed or refocused once the group agrees on this.
 
 ## Open questions / next steps
 
-- New `stac-extensions/maps` repository
-- How does the `rel=map` link's `tilematrixsets` relate to
+- Detailed **maps v1** and **web-map-links v2** proposals, written up before any schema here.
+- New `stac-extensions/maps` repository: scope, ownership.
+- How do web-map-links' per-TMS zoom ranges relate to
   [tiled-assets](https://github.com/stac-extensions/tiled-assets)' existing `tiles:tile_matrix_set_links`
   — reuse, align, or intentionally keep separate?
-- TMS-scoped zoom vs. bare `minzoom`/`maxzoom` vs. both, per the open question above.
