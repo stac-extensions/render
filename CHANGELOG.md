@@ -6,6 +6,27 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+### Added
+
+- Add `expression_type`, a media type identifying the dialect of `expression` (e.g. `text/x-numexpr`,
+  `application/vnd.maplibre.expression+json`), and a `rel: "stylesheet"` link relation for referencing external
+  style documents (SLD, Mapbox/MapLibre Style, OpenLayers Flatstyle, QGIS QML), sharing the same media-type
+  vocabulary. A stylesheet link may also address a specific named layer/style inside a multi-layer document via
+  a URI fragment on `href` ([#17](https://github.com/stac-extensions/render/issues/17),
+  [#21](https://github.com/stac-extensions/render/issues/21))
+- Add a vector data example (`examples/item-vector.json`), showing the extension used on non-raster data with
+  a MapLibre expression and stylesheet link
+- Add an `assets` cross-reference attribute to `rel: "stylesheet"` links, so a stylesheet can be tied
+  directly to one or more assets without requiring a `renders` entry — useful for vector styling, where
+  `render` (raster-focused) often doesn't apply at all
+
+### Fixed
+
+- Require `expression` whenever `expression_type` is set (the reverse is not required, so existing
+  documents using `expression` alone remain valid)
+- Correct the `stylesheet` link documentation: STAC Asset Objects have no `links` field, so a stylesheet
+  link always lives at the item/collection level, never directly on an asset
+
 ## [2.1.0] - 2026-09-22
 
 ### Added
