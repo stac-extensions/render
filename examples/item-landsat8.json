@@ -48,16 +48,8 @@
         ],
         "colormap_name": "rainbow",
         "resampling": "bilinear",
-        "bidx": [
-          1
-        ],
         "width": 1024,
-        "height": 1024,
-        "bands": [
-          "B4",
-          "B3",
-          "B2"
-        ]
+        "height": 1024
       },
       "ndvi": {
         "title": "Normalized Difference Vegetation Index",
