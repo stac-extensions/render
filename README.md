@@ -85,9 +85,9 @@ itself; it is a MUST, not a validated constraint.
 
 Each selector is either:
 
-- a 1-based band index (matching the GDAL/rio-tiler/titiler convention: the first band is `1`, not `0`), with
-  no required correspondence to any STAC band metadata — only meaningful if you already know how that asset's
-  bands are physically ordered; or
+- a 1-based band index (an integer `>= 1`, matching the GDAL/rio-tiler/titiler convention), with no required
+  correspondence to any STAC band metadata — only meaningful if you already know how that asset's bands are
+  physically ordered; or
 - a band name, which MUST match the `name` of a
   [Band Object](https://github.com/radiantearth/stac-spec/blob/v1.1.0/commons/common-metadata.md#bands)
   declared on that asset, whether via its `eo:bands`, `raster:bands`, or the STAC 1.1+ common `bands`
@@ -103,6 +103,15 @@ Each selector is either:
 
 Here, `B04` is used as-is (empty array: no sub-selection needed), while two bands are selected from the
 multi-band `stacked` asset: its 3rd band by index, and the band named `nir`.
+
+> **Warning:**
+> Band indexes are **1-based**: the first band of an asset is `1`, not `0`. This is different from the
+> 0-based position of a Band Object in the asset's `bands` array. Thus, the band at `bands[2]` has the index
+> `3`. The JSON Schema rejects `0`, but it cannot detect an off-by-one error for other values.
+
+In v2.x and earlier, `bidx` was a flat array of numbers (e.g. `"bidx": [1]`) that was not tied to a specific
+asset. This form is no longer valid. Change it to one inner array per asset, e.g. `"bidx": [[1]]` for a single
+asset.
 
 See the [Planet example](examples/item-planet.json) for a realistic case: PlanetScope's 8-band analytic
 product is delivered as a single multi-band GeoTIFF asset (unlike Sentinel-2/Landsat-8, which split each band

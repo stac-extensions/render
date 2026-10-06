@@ -276,7 +276,16 @@
           "items": {
             "type": "array",
             "items": {
-              "type": ["number", "string"]
+              "oneOf": [
+                {
+                  "type": "integer",
+                  "minimum": 1
+                },
+                {
+                  "type": "string",
+                  "minLength": 1
+                }
+              ]
             }
           }
         },
