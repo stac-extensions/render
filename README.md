@@ -41,7 +41,7 @@ The fields in the table below can be used in these parts of STAC documents:
 | title         | string    | Optional title of the rendering                                                                                                                                          |
 | rescale       | \[float]  | 2 dimensions array of delimited Min,Max range per band. If not provided, the data will not be rescaled.                                                                  |
 | nodata        | float, string     | Nodata value to use for this render, overriding any nodata value already defined on the referenced assets (e.g. via the [raster](https://github.com/stac-extensions/raster) extension). If not set, implementations SHOULD fall back to the asset's own nodata value. |
-| colormap_name | string    | Name of a standard [matplotlib colormap](https://matplotlib.org/3.11.2/users/explain/colors/colormaps.html) (e.g. `viridis`, `YlGn`) to apply to a raster band. Third party colormaps are not supported, use `colormap` instead. |
+| colormap_name | string    | Name of a standard [matplotlib colormap](https://matplotlib.org/3.11.2/users/explain/colors/colormaps.html) (e.g. `viridis`, `YlGn`) to apply to a raster band, including the reversed `_r` variants. The schema validates it against the colormaps registered in matplotlib 3.11.2, case-sensitively. Third party colormaps are not supported, use `colormap` instead. |
 | colormap      | object    | [Color map JSON definition](https://developmentseed.org/titiler/user_guide/rendering/#custom-colormaps) that must be applied for a raster band                             |
 | color_formula | string    | [Color formula](https://developmentseed.org/titiler/user_guide/rendering/#color-formula) that must be applied for a raster band                                            |
 | resampling    | string    | Resampling algorithm to apply to the referenced assets. See [GDAL resampling algorithm](https://gdal.org/programs/gdalwarp.html#cmdoption-gdalwarp-r) for some examples. |
@@ -259,7 +259,7 @@ the NDVI asset could also be downloaded as a standalone asset.
       "title": "Normalized Difference Vegetation Index",
       "assets": [ "ndvi" ],
       "resampling": "average",
-      "colormap_name": "ylgn"
+      "colormap_name": "YlGn"
     }
   }
 }
@@ -274,7 +274,7 @@ If this case, the parameters to titiler must be extracted from both the virtual 
 | assets            | Assets used in the expression, in the order they are referenced                 | `B08,B04`                                                                                      |
 | expression        | Band math formula as defined in field `vrt:algorithm`                            | `(B08-B04)/(B08+B04)`                                                                         |
 | rescale           | Delimited Min,Max bounds defined in `rescale` field                              | `-1,1`                                                                                        |
-| colormap_name     | Color map name as defined in `colormap_name`                                     | `ylgn`                                                                                        |
+| colormap_name     | Color map name as defined in `colormap_name`, lowercased                         | `ylgn`                                                                                        |
 | resampling_method | Resampling method to use when reprojecting the raster as defined in `resampling` | `average`                                                                                     |
 
 Example URL, using a self-hosted or public [titiler](https://github.com/developmentseed/titiler) instance.
@@ -299,7 +299,7 @@ Obviously, the same rendering can be applied to local source assets without usin
       "title": "Normalized Difference Vegetation Index",
       "assets": [ "B08", "B04" ],
       "resampling": "average",
-      "colormap_name": "ylgn",
+      "colormap_name": "YlGn",
       "expression": "(B08-B04)/(B08+B04)",
       "rescale": [[-1,1]]
     }

@@ -91,7 +91,7 @@
           "ndvi"
         ],
         "resampling": "average",
-        "colormap_name": "ylgn"
+        "colormap_name": "YlGn"
       }
     }
   },
